@@ -1,0 +1,2 @@
+course_packages/dd2419_launch
+/home/robot/dd2419_ws/devel/.private/dd2419_launch/cmake.lock /home/robot/dd2419_ws/devel/./cmake.lock

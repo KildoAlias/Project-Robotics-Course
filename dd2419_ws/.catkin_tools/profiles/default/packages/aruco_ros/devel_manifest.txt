@@ -1,0 +1,16 @@
+course_packages/aruco_ros/aruco_ros
+/home/robot/dd2419_ws/devel/.private/aruco_ros/cmake.lock /home/robot/dd2419_ws/devel/./cmake.lock
+/home/robot/dd2419_ws/devel/.private/aruco_ros/include/aruco_ros/ArucoThresholdConfig.h /home/robot/dd2419_ws/devel/include/aruco_ros/ArucoThresholdConfig.h
+/home/robot/dd2419_ws/devel/.private/aruco_ros/share/aruco_ros/cmake/aruco_rosConfig.cmake /home/robot/dd2419_ws/devel/share/aruco_ros/cmake/aruco_rosConfig.cmake
+/home/robot/dd2419_ws/devel/.private/aruco_ros/share/aruco_ros/cmake/aruco_rosConfig-version.cmake /home/robot/dd2419_ws/devel/share/aruco_ros/cmake/aruco_rosConfig-version.cmake
+/home/robot/dd2419_ws/devel/.private/aruco_ros/share/aruco_ros/docs/ArucoThresholdConfig.wikidoc /home/robot/dd2419_ws/devel/share/aruco_ros/docs/ArucoThresholdConfig.wikidoc
+/home/robot/dd2419_ws/devel/.private/aruco_ros/share/aruco_ros/docs/ArucoThresholdConfig-usage.dox /home/robot/dd2419_ws/devel/share/aruco_ros/docs/ArucoThresholdConfig-usage.dox
+/home/robot/dd2419_ws/devel/.private/aruco_ros/share/aruco_ros/docs/ArucoThresholdConfig.dox /home/robot/dd2419_ws/devel/share/aruco_ros/docs/ArucoThresholdConfig.dox
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/libaruco_ros_utils.so /home/robot/dd2419_ws/devel/lib/libaruco_ros_utils.so
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/pkgconfig/aruco_ros.pc /home/robot/dd2419_ws/devel/lib/pkgconfig/aruco_ros.pc
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/aruco_ros/marker_publisher /home/robot/dd2419_ws/devel/lib/aruco_ros/marker_publisher
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/aruco_ros/single /home/robot/dd2419_ws/devel/lib/aruco_ros/single
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/aruco_ros/double /home/robot/dd2419_ws/devel/lib/aruco_ros/double
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/python2.7/dist-packages/aruco_ros/__init__.py /home/robot/dd2419_ws/devel/lib/python2.7/dist-packages/aruco_ros/__init__.py
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/python2.7/dist-packages/aruco_ros/cfg/__init__.py /home/robot/dd2419_ws/devel/lib/python2.7/dist-packages/aruco_ros/cfg/__init__.py
+/home/robot/dd2419_ws/devel/.private/aruco_ros/lib/python2.7/dist-packages/aruco_ros/cfg/ArucoThresholdConfig.py /home/robot/dd2419_ws/devel/lib/python2.7/dist-packages/aruco_ros/cfg/ArucoThresholdConfig.py

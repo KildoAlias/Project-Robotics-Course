@@ -1,0 +1,3 @@
+Symlinking /home/robot/dd2419_ws/devel/share/dd2419_simulation/cmake/dd2419_simulationConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/dd2419_simulation/cmake/dd2419_simulationConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/dd2419_simulation.pc

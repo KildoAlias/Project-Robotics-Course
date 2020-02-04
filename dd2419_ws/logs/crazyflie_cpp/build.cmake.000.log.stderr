@@ -1,0 +1,11 @@
+Using ROS (catkin_make)
+[33m[1mCMake Warning[0m at /opt/ros/melodic/share/catkin/cmake/catkin_package.cmake:166 (message):
+  catkin_package() DEPENDS on '/usr/lib/x86_64-linux-gnu/libusb-1.0.so' but
+  neither '/usr/lib/x86_64-linux-gnu/libusb-1.0.so_INCLUDE_DIRS' nor
+  '/usr/lib/x86_64-linux-gnu/libusb-1.0.so_LIBRARIES' is defined.
+[36mCall Stack (most recent call first):[0m
+  /opt/ros/melodic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  ROS.cmake:18 (catkin_package)
+  CMakeLists.txt:6 (include)
+
+

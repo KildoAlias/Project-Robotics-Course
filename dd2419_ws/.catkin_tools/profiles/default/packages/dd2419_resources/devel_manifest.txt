@@ -1,0 +1,5 @@
+course_packages/dd2419_resources
+/home/robot/dd2419_ws/devel/.private/dd2419_resources/cmake.lock /home/robot/dd2419_ws/devel/./cmake.lock
+/home/robot/dd2419_ws/devel/.private/dd2419_resources/share/dd2419_resources/cmake/dd2419_resourcesConfig-version.cmake /home/robot/dd2419_ws/devel/share/dd2419_resources/cmake/dd2419_resourcesConfig-version.cmake
+/home/robot/dd2419_ws/devel/.private/dd2419_resources/share/dd2419_resources/cmake/dd2419_resourcesConfig.cmake /home/robot/dd2419_ws/devel/share/dd2419_resources/cmake/dd2419_resourcesConfig.cmake
+/home/robot/dd2419_ws/devel/.private/dd2419_resources/lib/pkgconfig/dd2419_resources.pc /home/robot/dd2419_ws/devel/lib/pkgconfig/dd2419_resources.pc

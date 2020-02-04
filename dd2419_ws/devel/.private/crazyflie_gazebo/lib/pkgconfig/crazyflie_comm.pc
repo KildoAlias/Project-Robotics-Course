@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/crazyflie_gazebo
+
+Name: crazyflie_comm
+Description: Description of crazyflie_comm
+Version: 0.0.1
+Cflags: -I/home/robot/dd2419_ws/src/course_packages/sim_cf/crazyflie_gazebo/external/crazyflie_comm/include
+Libs: -L${prefix}/lib -lcrazyflie_comm
+Requires: 

@@ -1,0 +1,13 @@
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_tools/cmake/crazyflie_toolsConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_tools/cmake/crazyflie_toolsConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/crazyflie_tools.pc
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/version
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/comCheck
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/battery
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/scan
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/listMemories
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/listParams
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/console
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/flash
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/reboot
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_tools/listLogVariables

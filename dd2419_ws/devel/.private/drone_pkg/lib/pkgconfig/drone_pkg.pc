@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/drone_pkg
+
+Name: drone_pkg
+Description: Description of drone_pkg
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

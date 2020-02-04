@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+<!-- Launches the simulation launch file -->
+  <include file="$(find dd2419_launch)/launch/base.launch">
+  </include>
+
+<!-- Spawn the camera visual effect? -->
+  <!-- <include file="$(find dd2419_simulation)/launch/aruco.launch">
+     <arg name="gui" value="false" />
+  </include> -->
+
+
+  
+  
+<!-- <node name="navgoal3" pkg="part2" type="navgoal3"/> -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_base2camera" args="0.01 0 0.02 1.5707963267948966 3.141592653589793 1.5707963267948966 cf1/base_link camera_link" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_map2odom" args="0 0 0 0 0 0 map cf1/odom" /> 
+  <!-- <node pkg="part2" type="displaymapmarkers" name="ArucoMarkersTF" args="$(find dd2419_resources)/worlds_json/awesome.world.json" /> -->
+  <!-- <node pkg="assignment" type="arucoMarkerDetection" name="marker_detection"/> -->
+  <node pkg="rviz" type="rviz" name="rviz" />
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+</launch>

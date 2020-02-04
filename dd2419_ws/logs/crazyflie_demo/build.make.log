@@ -1,0 +1,4 @@
+[35m[1mScanning dependencies of target quadrotor_teleop[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/quadrotor_teleop.dir/src/quadrotor_teleop.cpp.o[0m
+[100%] [32m[1mLinking CXX executable /home/robot/dd2419_ws/devel/.private/crazyflie_demo/lib/crazyflie_demo/quadrotor_teleop[0m
+[100%] Built target quadrotor_teleop

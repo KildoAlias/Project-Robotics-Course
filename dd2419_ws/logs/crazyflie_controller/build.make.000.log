@@ -1,0 +1,4 @@
+[35m[1mScanning dependencies of target crazyflie_controller[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/crazyflie_controller.dir/src/controller.cpp.o[0m
+[100%] [32m[1mLinking CXX executable /home/robot/dd2419_ws/devel/.private/crazyflie_controller/lib/crazyflie_controller/crazyflie_controller[0m
+[100%] Built target crazyflie_controller

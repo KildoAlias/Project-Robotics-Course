@@ -1,0 +1,6 @@
+course_packages/crazyflie_ros/crazyflie_controller
+/home/robot/dd2419_ws/devel/.private/crazyflie_controller/cmake.lock /home/robot/dd2419_ws/devel/./cmake.lock
+/home/robot/dd2419_ws/devel/.private/crazyflie_controller/share/crazyflie_controller/cmake/crazyflie_controllerConfig.cmake /home/robot/dd2419_ws/devel/share/crazyflie_controller/cmake/crazyflie_controllerConfig.cmake
+/home/robot/dd2419_ws/devel/.private/crazyflie_controller/share/crazyflie_controller/cmake/crazyflie_controllerConfig-version.cmake /home/robot/dd2419_ws/devel/share/crazyflie_controller/cmake/crazyflie_controllerConfig-version.cmake
+/home/robot/dd2419_ws/devel/.private/crazyflie_controller/lib/pkgconfig/crazyflie_controller.pc /home/robot/dd2419_ws/devel/lib/pkgconfig/crazyflie_controller.pc
+/home/robot/dd2419_ws/devel/.private/crazyflie_controller/lib/crazyflie_controller/crazyflie_controller /home/robot/dd2419_ws/devel/lib/crazyflie_controller/crazyflie_controller

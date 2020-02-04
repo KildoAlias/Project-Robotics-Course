@@ -1,0 +1,4 @@
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_demo/cmake/crazyflie_demoConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_demo/cmake/crazyflie_demoConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/crazyflie_demo.pc
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_demo/quadrotor_teleop

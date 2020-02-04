@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/crazyflie_gazebo
+
+Name: crazyflie_gazebo
+Description: Description of crazyflie_gazebo
+Version: 1.0.0
+Cflags: -I/home/robot/dd2419_ws/devel/.private/crazyflie_gazebo/include -I/home/robot/dd2419_ws/src/course_packages/sim_cf/crazyflie_gazebo/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib 
+Requires: cv_bridge geometry_msgs mav_msgs sensor_msgs roscpp std_srvs std_msgs tf message_runtime

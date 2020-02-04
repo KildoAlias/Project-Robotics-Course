@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/dd2419_resources
+
+Name: dd2419_resources
+Description: Description of dd2419_resources
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
