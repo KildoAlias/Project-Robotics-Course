@@ -22,7 +22,7 @@ pub_cmd  = rospy.Publisher('HOVER', Hover, queue_size=2)
 
 
 def main():
-    print("Starting")
+    print("Starting...")
     while True:
         pose = Hover()
         pose.header.stamp = rospy.Time.now()
@@ -30,23 +30,34 @@ def main():
         pose.vy = 0
         pose.yawrate = 0
         pose.zDistance = 0.4
+
         key = readchar.readkey()
         key = key.lower()
-        if key == ('w'):
-            pose.vx = 0.5
-        elif key == 'd':
-            pose.vy = 0.5
-        elif key == ('s'):
-            pose.vx = -0.5
-        elif key == 'a':
-            pose.vy = -0.5
-        print(pose)
-        publish_cmd(pose)
-        sleep_time = 0.0001
 
-        if key == 'q':
+        if key == 'c': # QUIT
             print("QUITING.")
             break
+
+        elif key == 'w': # FORWARD
+            pose.vx = 0.5
+
+        elif key == 'd': # RIGHT
+            pose.vy = 0.5
+
+        elif key == 's': # BACKWARD
+            pose.vx = -0.5
+
+        elif key == 'a': # LEFT
+            pose.vy = -0.5
+
+        elif key == 'e': # TURN RIGHT
+            pose.yawrate = 30
+
+        elif key == 'q': # TURN LEFT
+            pose.yawrate = -30
+       
+        publish_cmd(pose)
+    print("...Quiting")
 
 
 if __name__ == "__main__":
