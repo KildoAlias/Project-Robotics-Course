@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/install
+
+Name: milestone_1_pkg
+Description: Description of milestone_1_pkg
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

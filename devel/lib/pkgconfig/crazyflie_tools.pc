@@ -1,0 +1,1 @@
+/home/robot/dd2419_ws/devel/.private/crazyflie_tools/lib/pkgconfig/crazyflie_tools.pc

@@ -1,0 +1,4 @@
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_controller/cmake/crazyflie_controllerConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_controller/cmake/crazyflie_controllerConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/crazyflie_controller.pc
+Symlinking /home/robot/dd2419_ws/devel/lib/crazyflie_controller/crazyflie_controller

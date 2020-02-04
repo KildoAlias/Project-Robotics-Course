@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/install
+
+Name: crazyflie_comm
+Description: Description of crazyflie_comm
+Version: 0.0.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lcrazyflie_comm
+Requires: 

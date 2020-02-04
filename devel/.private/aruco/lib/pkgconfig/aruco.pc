@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/aruco
+
+Name: aruco
+Description: Description of aruco
+Version: 0.2.4
+Cflags: -I/home/robot/dd2419_ws/src/course_packages/aruco_ros/aruco/include
+Libs: -L${prefix}/lib -laruco
+Requires: 

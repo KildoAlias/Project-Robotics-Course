@@ -1,0 +1,3 @@
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_description/cmake/crazyflie_descriptionConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/crazyflie_description/cmake/crazyflie_descriptionConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/crazyflie_description.pc

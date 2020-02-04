@@ -1,0 +1,8 @@
+prefix=/home/robot/dd2419_ws/devel/.private/dd2419_simulation
+
+Name: dd2419_simulation
+Description: Description of dd2419_simulation
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

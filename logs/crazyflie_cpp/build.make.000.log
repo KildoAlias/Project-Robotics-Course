@@ -1,0 +1,8 @@
+[35m[1mScanning dependencies of target crazyflie_cpp[0m
+[ 16%] [32mBuilding CXX object CMakeFiles/crazyflie_cpp.dir/src/USBDevice.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/crazyflie_cpp.dir/src/Crazyradio.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/crazyflie_cpp.dir/src/CrazyflieUSB.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/crazyflie_cpp.dir/src/Crazyflie.cpp.o[0m
+[ 83%] [32mBuilding CXX object CMakeFiles/crazyflie_cpp.dir/src/crtp.cpp.o[0m
+[100%] [32m[1mLinking CXX shared library /home/robot/dd2419_ws/devel/.private/crazyflie_cpp/lib/libcrazyflie_cpp.so[0m
+[100%] Built target crazyflie_cpp

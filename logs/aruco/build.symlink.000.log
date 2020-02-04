@@ -1,0 +1,5 @@
+Symlinking /home/robot/dd2419_ws/devel/share/aruco/cmake/arucoConfig-version.cmake
+Symlinking /home/robot/dd2419_ws/devel/share/aruco/cmake/arucoConfig.cmake
+Symlinking /home/robot/dd2419_ws/devel/lib/libaruco.so
+Symlinking /home/robot/dd2419_ws/devel/lib/aruco/optimalmarkers
+Symlinking /home/robot/dd2419_ws/devel/lib/pkgconfig/aruco.pc
