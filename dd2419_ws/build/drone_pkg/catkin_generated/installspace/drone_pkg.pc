@@ -1,8 +1,0 @@
-prefix=/home/robot/dd2419_ws/install
-
-Name: drone_pkg
-Description: Description of drone_pkg
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

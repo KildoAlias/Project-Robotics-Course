@@ -1,1 +1,0 @@
-/home/robot/dd2419_ws/devel/.private/dd2419_resources/share/dd2419_resources/cmake/dd2419_resourcesConfig-version.cmake

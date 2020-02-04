@@ -1,1 +1,0 @@
-/home/robot/dd2419_ws/devel/.private/drone_pkg/lib/pkgconfig/drone_pkg.pc
