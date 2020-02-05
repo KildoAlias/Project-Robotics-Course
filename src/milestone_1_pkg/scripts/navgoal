@@ -16,7 +16,7 @@ def goal_callback(msg):
 
     # RViz's "2D Nav Goal" publishes z=0, so add some altitude if needed.
     if msg.pose.position.z == 0.0:
-        msg.pose.position.z = 0.3
+        msg.pose.position.z = 0.4
 
     rospy.loginfo('New goal set:\n%s', msg)
     goal = msg
@@ -31,19 +31,23 @@ def publish_cmd(goal):
 
     goal_odom = tf_buf.transform(goal, 'cf1/odom')
 
-    # cmd = Position()
-    # cmd.x = goal_odom.pose.position.x
-    # cmd.y = goal_odom.pose.position.y
-    # cmd.z = goal_odom.pose.position.z
+    cmd = Position()
 
-    cmd = Hover()
     cmd.header.stamp = rospy.Time.now()
     cmd.header.frame_id = goal_odom.header.frame_id
-    cmd.vx = 0
-    cmd.vy = 0
-    cmd.zDistance = 0.2                        
-    pub_cmd.publish(cmd)
 
+    cmd.x = goal_odom.pose.position.x
+    cmd.y = goal_odom.pose.position.y
+    cmd.z = goal_odom.pose.position.z
+
+    roll, pitch, yaw = euler_from_quaternion((goal_odom.pose.orientation.x,
+                                              goal_odom.pose.orientation.y,
+                                              goal_odom.pose.orientation.z,
+                                              goal_odom.pose.orientation.w))
+
+    cmd.yaw = math.degrees(yaw)
+
+    pub_cmd.publish(cmd)
 
 
 rospy.init_node('navgoal')

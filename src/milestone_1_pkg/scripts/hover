@@ -8,17 +8,23 @@ import tf2_ros
 import tf2_geometry_msgs
 from crazyflie_driver.msg import Hover
 from aruco_msgs.msg import MarkerArray
+from geometry_msgs.msg import PoseStamped
 
 pose = Hover()
+# latest_hover_lvl = 0.4
 
-def hover_callback(data):
+def keyboard_callback(data):
     global pose
     pose = data
     print(pose)
 
+# def pose_callback(data):
+#     global latest_hover_lvl
+#     latest_hover_lvl = data.pose.position.z
+
 
 def publish_cmd(pose_to_pub):
-    global pose
+    global pose, latest_hover_lvl
     pub_cmd.publish(pose_to_pub)
     pose = Hover()
     pose.header.stamp = rospy.Time.now()
@@ -30,8 +36,9 @@ def publish_cmd(pose_to_pub):
 
 
 
-rospy.init_node('HOVER')
-rospy.Subscriber("HOVER", Hover, hover_callback)
+rospy.init_node("hover")
+rospy.Subscriber("ml1/keyboard", Hover, keyboard_callback)
+# rospy.Subscriber("cf1/pose", PoseStamped, pose_callback)
 pub_cmd  = rospy.Publisher('/cf1/cmd_hover', Hover, queue_size=2)
 
 

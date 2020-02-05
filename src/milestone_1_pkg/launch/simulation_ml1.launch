@@ -2,8 +2,7 @@
 <launch>
 
 <!-- Launches the simulation launch file -->
-  <include file="$(find dd2419_launch)/launch/base.launch"> 
-	<arg name="ch" value="86" />
+  <include file="$(find dd2419_simulation)/launch/simulation.launch"> 
   </include>
 
 <!-- Spawn the camera visual effect? -->

@@ -17,19 +17,20 @@ def publish_cmd(pose_to_pub):
 
 
 rospy.init_node('hoverKeyboard')
-pub_cmd  = rospy.Publisher('HOVER', Hover, queue_size=2)
+pub_cmd  = rospy.Publisher("ml1/keyboard", Hover, queue_size=2)
 
 
 
 def main():
     print("Starting...")
+    hover_lvl = 0.4
     while True:
         pose = Hover()
         pose.header.stamp = rospy.Time.now()
         pose.vx = 0
         pose.vy = 0
         pose.yawrate = 0
-        pose.zDistance = 0.4
+        pose.zDistance = hover_lvl
 
         key = readchar.readkey()
         key = key.lower()
@@ -55,7 +56,15 @@ def main():
 
         elif key == 'q': # TURN LEFT
             pose.yawrate = -30
-       
+
+        # elif key == 'r': # UP
+        #     hover_lvl += 0.1
+        #     pose.zDistance = hover_lvl
+
+        # elif key == 'f': # DOWN
+        #     hover_lvl -= 0.1
+        #     pose.zDistance = hover_lvl
+
         publish_cmd(pose)
     print("...Quiting")
 
