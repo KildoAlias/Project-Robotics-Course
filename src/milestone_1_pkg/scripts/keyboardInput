@@ -42,13 +42,13 @@ def main():
         elif key == 'w': # FORWARD
             pose.vx = 0.5
 
-        elif key == 'd': # RIGHT
+        elif key == 'a': # LEFT
             pose.vy = 0.5
 
         elif key == 's': # BACKWARD
             pose.vx = -0.5
 
-        elif key == 'a': # LEFT
+        elif key == 'd': # RIGHT
             pose.vy = -0.5
 
         elif key == 'e': # TURN RIGHT

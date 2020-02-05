@@ -13,8 +13,8 @@ from cv_bridge import CvBridge, CvBridgeError
 class image_converter:
 
   def __init__(self):
-    self.image_pub = rospy.Publisher("/myresult", Image, queue_size=2)
-
+    self.image_pub = rospy.Publisher("/object_detection", Image, queue_size=2)
+    self.image_pub_raw = rospy.Publisher("/object_detection_raw", Image, queue_size=2)
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/cf1/camera/image_raw", Image, self.callback)
 
@@ -32,15 +32,15 @@ class image_converter:
     lower_white = np.array([0,0,0])
     upper_white = np.array([180,5,255])
 
-    lower_red = np.array([5,110,210])
-    upper_red = np.array([25,235,255])
+    lower_red = np.array([5,50  ,150])
+    upper_red = np.array([25,200,255])
 
     # Threshold the HSV image to get only the pixels in ranage
     mask_white = cv2.inRange(hsv, lower_white, upper_white)
     mask_red = cv2.inRange(hsv, lower_red, upper_red)
 
     # Bitwise-AND mask and original image
-    mask = mask_white + mask_red
+    mask = mask_red
     res = cv2.bitwise_and(cv_image, cv_image, mask= mask)
 
     #Take out maxi
@@ -58,15 +58,16 @@ class image_converter:
     medel1 = np.mean(test[0][:])
     medel2 = np.mean(test[1][:])
     
-    cols, rows, chanels = res.shape
+    cols, rows, _ = res.shape
     if number_of_red > 3500:
      rospy.loginfo('Stop sign, is in the image') 
      if cols > 100 and rows > 100 :
+      cv2.circle(img=cv_image, center=(int(medel2),int(medel1)), radius=int(abs(max_diag-min_diag)/2), color=(255,0,0), thickness=5)
       cv2.circle(img=res, center=(int(medel2),int(medel1)), radius=int(abs(max_diag-min_diag)/2), color=(255,0,0), thickness=5)
-
 
     # Publish the image
     try:
+      self.image_pub_raw.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(res, "bgr8"))
     except CvBridgeError as e:
       print(e)
