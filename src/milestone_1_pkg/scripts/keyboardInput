@@ -10,11 +10,67 @@ import tf2_geometry_msgs
 from crazyflie_driver.msg import Hover
 from aruco_msgs.msg import MarkerArray
 
+HOVER_LVL = 0.2
+SHUTDOWN = False
+POSE = Hover()
 
-def publish_cmd(pose_to_pub):
-    pub_cmd.publish(pose_to_pub)
+def publish_hover():
+    global POSE
+    pub_cmd.publish(POSE)
 
 
+def keyAction(key):
+    global HOVER_LVL, SHUTDOWN, POSE
+
+    POSE.header.stamp = rospy.Time.now()
+    POSE.vx = 0
+    POSE.vy = 0
+    POSE.yawrate = 0
+    POSE.zDistance = HOVER_LVL
+
+    if key == 'c': # QUIT
+            print("QUITING...")
+            pub_SHUTDOWN.publish(POSE)
+            SHUTDOWN = True
+
+    elif key == 'w': # FORWARD
+        POSE.vx = 0.5
+
+    elif key == 'a': # LEFT
+        POSE.vy = 0.5
+
+    elif key == 's': # BACKWARD
+        POSE.vx = -0.5
+
+    elif key == 'd': # RIGHT
+        POSE.vy = -0.5
+
+    elif key == 'e': # TURN RIGHT
+        POSE.yawrate = 30
+
+    elif key == 'q': # TURN LEFT
+        POSE.yawrate = -30
+
+    if HOVER_LVL < 0 :
+        rospy.logwarn("OUT OF LOWER BOUNDS")
+        if key == 'r': # UP
+            HOVER_LVL += 0.02
+            POSE.zDistance = HOVER_LVL
+    
+    elif HOVER_LVL > 1:
+        rospy.logwarn("OUT OF UPPER BOUNDS")
+        if key == 'f': # DOWN
+            HOVER_LVL -= 0.02
+            POSE.zDistance = HOVER_LVL
+    else:
+        if key == 'r': # UP
+            HOVER_LVL += 0.02
+            POSE.zDistance = HOVER_LVL
+
+        elif key == 'f': # DOWN
+            HOVER_LVL -= 0.02
+            POSE.zDistance = HOVER_LVL
+    return POSE
 
 rospy.init_node('hoverKeyboard')
 pub_cmd  = rospy.Publisher("ml1/keyboard", Hover, queue_size=2)
@@ -22,64 +78,16 @@ pub_SHUTDOWN = rospy.Publisher("ml1/SHUTDOWN", Hover, queue_size=1)
 
 
 def main():
+    global HOVER_LVL
     print("Starting...")
-    hover_lvl = 0.4
-    while True:
-        pose = Hover()
-        pose.header.stamp = rospy.Time.now()
-        pose.vx = 0
-        pose.vy = 0
-        pose.yawrate = 0
-        pose.zDistance = hover_lvl
+
+    while not SHUTDOWN:
 
         key = readchar.readkey()
         key = key.lower()
 
-
-        if key == 'c': # QUIT
-            print("QUITING...")
-            pub_SHUTDOWN.publish(pose)
-            break
-
-        elif key == 'w': # FORWARD
-            pose.vx = 0.5
-
-        elif key == 'a': # LEFT
-            pose.vy = 0.5
-
-        elif key == 's': # BACKWARD
-            pose.vx = -0.5
-
-        elif key == 'd': # RIGHT
-            pose.vy = -0.5
-
-        elif key == 'e': # TURN RIGHT
-            pose.yawrate = 30
-
-        elif key == 'q': # TURN LEFT
-            pose.yawrate = -30
-
-        if hover_lvl < 0 :
-            rospy.logwarn("OUT OF LOWER BOUNDS")
-            if key == 'r': # UP
-                hover_lvl += 0.02
-                pose.zDistance = hover_lvl
-        
-        elif hover_lvl > 1:
-            rospy.logwarn("OUT OF UPPER BOUNDS")
-            if key == 'f': # DOWN
-                hover_lvl -= 0.02
-                pose.zDistance = hover_lvl
-        else:
-            if key == 'r': # UP
-                hover_lvl += 0.02
-                pose.zDistance = hover_lvl
-    
-            elif key == 'f': # DOWN
-                hover_lvl -= 0.02
-                pose.zDistance = hover_lvl
-
-        publish_cmd(pose)
+        POSE = keyAction(key)
+        publish_hover()
 
 
 if __name__ == "__main__":

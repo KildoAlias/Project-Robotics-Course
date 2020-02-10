@@ -12,9 +12,11 @@ from geometry_msgs.msg import PoseStamped
 
 POSE = Hover()
 SHUTDOWN = False
+INITILIZED = False
 
 def keyboard_callback(data):
-    global POSE
+    global POSE, INITILIZED
+    INITILIZED = True
     POSE = data
     print(POSE)
 
@@ -40,7 +42,7 @@ def publish_cmd(POSE_to_pub):
 rospy.init_node("hover")
 rospy.Subscriber("ml1/keyboard", Hover, keyboard_callback)
 rospy.Subscriber("ml1/SHUTDOWN", Hover, SHUTDOWN_callback)
-# rospy.Subscriber("cf1/POSE", POSEStamped, POSE_callback)
+
 pub_cmd  = rospy.Publisher('/cf1/cmd_hover', Hover, queue_size=2)
 
 
@@ -48,15 +50,19 @@ pub_cmd  = rospy.Publisher('/cf1/cmd_hover', Hover, queue_size=2)
 def main():
     print("STARTING...")
     rate = rospy.Rate(10)  # Hz
-    while not SHUTDOWN:
-        publish_cmd(POSE)
-        rate.sleep()
-    if SHUTDOWN:
-        print("QUITING...")
-        while POSE.zDistance > 0:
-            POSE.zDistance -= 0.01
+    while not rospy.is_shutdown():
+        while not SHUTDOWN and INITILIZED:
             publish_cmd(POSE)
-            rospy.sleep(0.1)
+            rate.sleep()
+
+        if SHUTDOWN:
+            print("QUITING...")
+            while POSE.zDistance > 0.1:
+                POSE.zDistance -= 0.02
+                publish_cmd(POSE)
+                rospy.sleep(0.1)
+            break
+        
     
 
 
