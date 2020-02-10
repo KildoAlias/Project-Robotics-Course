@@ -18,7 +18,7 @@ def publish_cmd(pose_to_pub):
 
 rospy.init_node('hoverKeyboard')
 pub_cmd  = rospy.Publisher("ml1/keyboard", Hover, queue_size=2)
-
+pub_SHUTDOWN = rospy.Publisher("ml1/SHUTDOWN", Hover, queue_size=1)
 
 
 def main():
@@ -35,8 +35,10 @@ def main():
         key = readchar.readkey()
         key = key.lower()
 
+
         if key == 'c': # QUIT
-            print("QUITING.")
+            print("QUITING...")
+            pub_SHUTDOWN.publish(pose)
             break
 
         elif key == 'w': # FORWARD
@@ -63,7 +65,7 @@ def main():
                 hover_lvl += 0.02
                 pose.zDistance = hover_lvl
         
-        elif hover_lvl > 1.5:
+        elif hover_lvl > 1:
             rospy.logwarn("OUT OF UPPER BOUNDS")
             if key == 'f': # DOWN
                 hover_lvl -= 0.02
@@ -78,7 +80,6 @@ def main():
                 pose.zDistance = hover_lvl
 
         publish_cmd(pose)
-    print("...Quiting")
 
 
 if __name__ == "__main__":
