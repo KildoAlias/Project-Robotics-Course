@@ -57,13 +57,16 @@ def main():
         elif key == 'q': # TURN LEFT
             pose.yawrate = -30
 
-        # elif key == 'r': # UP
-        #     hover_lvl += 0.1
-        #     pose.zDistance = hover_lvl
+        if hover_lvl < 0 or hover_lvl > 1.5:
+            rospy.logwarn("OUT OF BOUNDS")
+        else:
+            if key == 'r': # UP
+                hover_lvl += 0.02
+                pose.zDistance = hover_lvl
 
-        # elif key == 'f': # DOWN
-        #     hover_lvl -= 0.1
-        #     pose.zDistance = hover_lvl
+            elif key == 'f': # DOWN
+                hover_lvl -= 0.02
+                pose.zDistance = hover_lvl
 
         publish_cmd(pose)
     print("...Quiting")
