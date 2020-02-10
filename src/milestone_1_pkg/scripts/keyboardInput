@@ -72,6 +72,10 @@ def keyAction(key):
             POSE.zDistance = HOVER_LVL
     return POSE
 
+def printPose():
+    global POSE
+    print(POSE, end='\r', flush=True)
+
 rospy.init_node('hoverKeyboard')
 pub_cmd  = rospy.Publisher("ml1/keyboard", Hover, queue_size=2)
 pub_SHUTDOWN = rospy.Publisher("ml1/SHUTDOWN", Hover, queue_size=1)
@@ -87,6 +91,7 @@ def main():
         key = key.lower()
 
         POSE = keyAction(key)
+        printPose()
         publish_hover()
 
 
