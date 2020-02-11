@@ -46,10 +46,10 @@ def keyAction(key):
         POSE.vy = -0.5
 
     elif key == 'e': # TURN RIGHT
-        POSE.yawrate = 30
+        POSE.yawrate = 60
 
     elif key == 'q': # TURN LEFT
-        POSE.yawrate = -30
+        POSE.yawrate = -60
 
     if HOVER_LVL < 0 :
         rospy.logwarn("OUT OF LOWER BOUNDS")

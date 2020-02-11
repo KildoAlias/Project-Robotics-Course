@@ -65,7 +65,7 @@ def cmd_func(msg):
         cmd.yaw = 0
         pub_cmd.publish(cmd)
 
-        if diff_x < 0.05:
+        if diff_x < 0.02:
             rospy.sleep(0.2)
             state = 3
 ##################################################################

@@ -59,7 +59,7 @@ class image_converter:
     medel2 = np.mean(test[1][:])
     
     cols, rows, _ = res.shape
-    if number_of_red > 3500:
+    if number_of_red > 4500:
      rospy.loginfo('Stop sign, is in the image') 
      if cols > 100 and rows > 100 :
       cv2.circle(img=cv_image, center=(int(medel2),int(medel1)), radius=int(abs(max_diag-min_diag)/2), color=(255,0,0), thickness=5)
