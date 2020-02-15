@@ -14,7 +14,6 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
 
-
 def cuboid_data(o, size=(1,1,1)):
     # code taken from
     # https://stackoverflow.com/a/35978146/4124317
@@ -74,9 +73,9 @@ class Astar():
     def printMAP(self):
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlim3d(0, self.X_limit["max"])
-        ax.set_ylim3d(0, self.Y_limit["max"])
-        ax.set_zlim3d(0, self.Z_limit["max"])
+        ax.set_xlim3d(self.X_limit["min"], self.X_limit["max"])
+        ax.set_ylim3d(self.Y_limit["min"], self.Y_limit["max"])
+        ax.set_zlim3d(self.Z_limit["min"], self.Z_limit["max"])
         ax.set_xlabel('X axis')
         ax.set_ylabel('Y axis')
         ax.set_zlabel('Z axis')
@@ -95,12 +94,19 @@ class Astar():
             elif pos_start[2]-pos_stop[2] == 0: size[2] = 0.2
             plotCubeAt(pos=pos_start, size=size, ax=ax, color=self.WALL["color"])
 
+        x_line = []
+        y_line = []
+        z_line = []
         for p in self.path:
-            x = p[0]*self.discretization
-            y = p[1]*self.discretization
-            z = p[2]*self.discretization
+            x_line.append(p[0]*self.discretization + self.X_limit["min"])
+            y_line.append(p[1]*self.discretization + self.Y_limit["min"])
+            z_line.append(p[2]*self.discretization + self.Z_limit["min"])
+            x = p[0]*self.discretization + self.X_limit["min"]
+            y = p[1]*self.discretization + self.Y_limit["min"]
+            z = p[2]*self.discretization + self.Z_limit["min"]
             path_pos = [x, y, z]
             plotCubeAt(pos=path_pos, size=(0.2,0.2,0.1), ax=ax, color=self.PATH["color"])
+        ax.plot3D(x_line, y_line, z_line, linewidth=5, color='blue')
 
         plt.show()
 
@@ -145,14 +151,12 @@ class Astar():
                                     self.grid[x][y][z] = self.WALL["index"]
 
     def getWayPoints(self):
-        print("gakkp=")
         for p in self.path:
             point = []
-            point.append(p[0]*self.discretization)
-            point.append(p[1]*self.discretization)
-            point.append(p[2]*self.discretization)
-            print(point)
-            self.droneWayPoints.append(point)
+            point.append(p[0]*self.discretization + self.X_limit["min"])
+            point.append(p[1]*self.discretization + self.Y_limit["min"])
+            point.append(p[2]*self.discretization + self.Z_limit["min"])
+            self.droneWayPoints.insert(0,point)
 
     class Astar_node():
         def __init__(self, position, parent = None, cost = 0):
@@ -165,7 +169,7 @@ class Astar():
             self.path.append(current.position)
             current = current.parent
         self.getWayPoints()
-        print("PATH FOUND")
+        print("Path found!")
 
     def neighbors(self, current):
         neigh = []
@@ -179,9 +183,9 @@ class Astar():
                         x_pos = current.position[0] + x
                         y_pos = current.position[1] + y
                         z_pos = current.position[2] + z
-                        if x_pos < self.rows and x_pos > 0:
-                            if y_pos < self.cols and y_pos > 0:
-                                if z_pos < self.depth and z_pos > 0:
+                        if x_pos < self.rows and x_pos >= 0:
+                            if y_pos < self.cols and y_pos >= 0:
+                                if z_pos < self.depth and z_pos >= 0:
                                     pos = [x_pos, y_pos, z_pos]
                                     neigh.append( self.Astar_node(pos, current) )
         return neigh
@@ -191,19 +195,37 @@ class Astar():
         costToHome = sqrt( (current.position[0] - START[0])**2 + (current.position[1] - START[1])**2 + (current.position[2] - START[2])**2 )
         return costToGo + costToHome
 
+    def ifValid(self, gridPoss):
+        if gridPoss[0] < self.rows and gridPoss[0] >= 0:
+            if gridPoss[1] < self.cols and gridPoss[1] >= 0:
+                if gridPoss[2] < self.depth and gridPoss[2] >= 0:
+                    if self.grid[gridPoss[0]][gridPoss[1]][gridPoss[2]] == 0.0:
+                        return True     
+        return False
+
     def getPath(self):
         self.getGrid()
 
         # Initilizing goal and start point, depending on our discretization
         START = []
         GOAL = []
-        START.append(int(self.start[0]/self.discretization))
-        START.append(int(self.start[1]/self.discretization))
-        START.append(int(self.start[2]/self.discretization))
+        START.append(int(self.start[0]/self.discretization - self.X_limit["min"]/self.discretization))
+        START.append(int(self.start[1]/self.discretization - self.Y_limit["min"]/self.discretization))
+        START.append(int(self.start[2]/self.discretization - self.Z_limit["min"]/self.discretization))
 
-        GOAL.append(int(self.goal[0]/self.discretization))
-        GOAL.append(int(self.goal[1]/self.discretization))
-        GOAL.append(int(self.goal[2]/self.discretization))
+        GOAL.append(int(self.goal[0]/self.discretization - self.X_limit["min"]/self.discretization))
+        GOAL.append(int(self.goal[1]/self.discretization - self.Y_limit["min"]/self.discretization))
+        GOAL.append(int(self.goal[2]/self.discretization - self.Z_limit["min"]/self.discretization))
+
+        if not self.ifValid(GOAL):
+            print("NOT A VALID GOAL POINT")
+            print(GOAL)
+            return False
+        elif not self.ifValid(START):
+            print("NOT A VALID START POINT!")
+            print(START)
+            return False
+
 
         # Initilizing start node.
         start = self.Astar_node(START)
@@ -224,16 +246,14 @@ class Astar():
                     neighbor.cost = self.heuristic(neighbor, START, GOAL)
                     openSet[neighbor.cost] = neighbor
                     self.grid[neighbor.position[0]][neighbor.position[1]][neighbor.position[2]] = self.PATH["index"]
-        
-        print("FAILED TO FIND PATH")
-
-        
+        print("OBS! No path found.")
+        return False
 
         
 def main():
-    nav = Astar("/home/i/l/ilianc/milestone_2_files/maps/comp.world.json",0.25)
-    nav.start = [6,4,0]
-    nav.goal = [1,4,0.5]
+    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/awesome.world.json",0.25)
+    nav.start = [0,0,0.4]
+    nav.goal = [-5,-5,2]
     nav.getPath()
     nav.printMAP()
     print(nav.droneWayPoints)
