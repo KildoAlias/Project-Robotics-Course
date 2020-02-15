@@ -1,1 +1,0 @@
-/home/robot/dd2419_ws/devel/.private/aruco_msgs/share/roseus/ros/aruco_msgs/msg/Marker.l
