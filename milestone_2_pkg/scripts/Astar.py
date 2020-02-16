@@ -108,11 +108,22 @@ class Astar():
             plotCubeAt(pos=path_pos, size=(0.2,0.2,0.1), ax=ax, color=self.PATH["color"])
         ax.plot3D(x_line, y_line, z_line, linewidth=5, color='blue')
 
-        plt.show()
+        plt.draw()
+        plt.pause(0.001)
+
+    def ifValid(self, gridPoss):
+        if gridPoss[0] < self.rows and gridPoss[0] >= 0:
+            if gridPoss[1] < self.cols and gridPoss[1] >= 0:
+                if gridPoss[2] < self.depth and gridPoss[2] >= 0:
+                    if self.grid[gridPoss[0]][gridPoss[1]][gridPoss[2]] == 0.0:
+                        return True     
+        return False
 
     def getGrid(self):
         with open(self.jsonfile, 'rb') as f:
             self.world = json.load(f)
+
+        # Setting limits
         self.X_limit["min"] = self.world["airspace"]["min"][0]
         self.X_limit["max"] = self.world["airspace"]["max"][0]
 
@@ -127,12 +138,17 @@ class Astar():
         self.depth = int((self.Z_limit["max"] - self.Z_limit["min"])/self.discretization)
         self.grid = np.zeros((self.rows, self.cols, self.depth))
 
+        # If we want prints set VEROSE to True.
         if self.VERBOSE == True:          
             print("Rows: ", self.rows)
             print("Cols: ", self.cols)
             print("Depth: ", self.depth)
             print("Grid shape(X, Y, Z): ", self.grid.shape)
 
+        self.addWalls()
+
+    def addWalls(self):
+        # Adding wall to the grid. 
         for wall in self.world["walls"]:
             x_start = (wall["plane"]["start"][0] - 0.5)/self.discretization
             x_stop = (wall["plane"]["stop"][0] + 0.5)/self.discretization
@@ -145,10 +161,8 @@ class Astar():
                     z_start = (wall["plane"]["start"][2] - 0.25)/self.discretization
                     z_stop = (wall["plane"]["stop"][2] + 0.25)/self.discretization
                     for z in range(int(z_start), int(z_stop)):
-                        if x < self.rows and x > 0:
-                            if y < self.cols and y > 0:
-                                if z < self.depth and z > 0:
-                                    self.grid[x][y][z] = self.WALL["index"]
+                        if self.ifValid([x,y,z]):
+                            self.grid[x][y][z] = self.WALL["index"]
 
     def getWayPoints(self):
         for p in self.path:
@@ -157,7 +171,6 @@ class Astar():
             point.append(p[1]*self.discretization + self.Y_limit["min"])
             point.append(p[2]*self.discretization + self.Z_limit["min"])
             self.droneWayPoints.insert(0,point)
-
     class Astar_node():
         def __init__(self, position, parent = None, cost = 0):
             self.position = position
@@ -183,25 +196,15 @@ class Astar():
                         x_pos = current.position[0] + x
                         y_pos = current.position[1] + y
                         z_pos = current.position[2] + z
-                        if x_pos < self.rows and x_pos >= 0:
-                            if y_pos < self.cols and y_pos >= 0:
-                                if z_pos < self.depth and z_pos >= 0:
-                                    pos = [x_pos, y_pos, z_pos]
-                                    neigh.append( self.Astar_node(pos, current) )
+                        pos = [x_pos, y_pos, z_pos]
+                        if self.ifValid(pos):
+                             neigh.append( self.Astar_node(pos, current) )
         return neigh
 
     def heuristic(self, current, START, GOAL):
         costToGo = sqrt( (current.position[0] - GOAL[0])**2 + (current.position[1] - GOAL[1])**2 + (current.position[2] - GOAL[2])**2 )
         costToHome = sqrt( (current.position[0] - START[0])**2 + (current.position[1] - START[1])**2 + (current.position[2] - START[2])**2 )
         return costToGo + costToHome
-
-    def ifValid(self, gridPoss):
-        if gridPoss[0] < self.rows and gridPoss[0] >= 0:
-            if gridPoss[1] < self.cols and gridPoss[1] >= 0:
-                if gridPoss[2] < self.depth and gridPoss[2] >= 0:
-                    if self.grid[gridPoss[0]][gridPoss[1]][gridPoss[2]] == 0.0:
-                        return True     
-        return False
 
     def getPath(self):
         self.getGrid()
@@ -226,13 +229,11 @@ class Astar():
             print(START)
             return False
 
-
         # Initilizing start node.
         start = self.Astar_node(START)
         start.cost = self.heuristic(start, START, GOAL)
         openSet = {}
         openSet[start.cost] = start
-
 
         tol = 2 # number of grids from. 
         while openSet != {}:
@@ -246,18 +247,25 @@ class Astar():
                     neighbor.cost = self.heuristic(neighbor, START, GOAL)
                     openSet[neighbor.cost] = neighbor
                     self.grid[neighbor.position[0]][neighbor.position[1]][neighbor.position[2]] = self.PATH["index"]
+        
         print("OBS! No path found.")
         return False
 
         
+
+
+
+
+
+
 def main():
-    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/awesome.world.json",0.25)
-    nav.start = [0,0,0.4]
-    nav.goal = [-5,-5,2]
+    nav = Astar("comp.world.json",0.25)
+    nav.start = [5.5,4,0]
+    nav.goal = [2,4,1]
     nav.getPath()
     nav.printMAP()
     print(nav.droneWayPoints)
-
+    plt.show()
 if __name__ == "__main__":
     main()
 

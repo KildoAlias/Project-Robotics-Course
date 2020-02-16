@@ -8,6 +8,7 @@ from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import PoseStamped
 from crazyflie_driver.msg import Position
 from Astar import Astar
+import matplotlib.pyplot as plt
 
 # Current goal (global state)
 goal = []
@@ -42,6 +43,7 @@ def main():
     nav.goal = [-5,-5,2]
     nav.getPath()
     nav.printMAP()
+    plt.show()
     
     while not rospy.is_shutdown():
         for goal in nav.droneWayPoints:
