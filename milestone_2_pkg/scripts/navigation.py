@@ -56,13 +56,14 @@ pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
 def main():
     global pos
     rate = rospy.Rate(20)  # Hz
-    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/tutorial_1.world.json",0.25)
-    nav.start = [0,0,0.4]
-    nav.goal = [-5,-5,2]
+    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
+    nav.start = [0, 0, 0]
+    nav.goal = [2, 2, 0.4]
     nav.getPath()
     nav.printMAP()
     plt.show()
-    
+    path_ok = 0
+
     while not rospy.is_shutdown():
         id = 0
         for goal in nav.droneWayPoints:
@@ -70,20 +71,21 @@ def main():
             id += 1
 
         id = 0
-        for goal in nav.droneWayPoints:
-            publish_path(goal, color=[1.0, 0.0, 0.0], id=id)
-            id += 1
-            tol = 0.1
-            while math.sqrt( (pos.pose.position.x - goal[0])**2 + (pos.pose.position.y - goal[1])**2 + (pos.pose.position.z - goal[2])**2 ) > tol:
-                publish_cmd(goal)
-                rate.sleep()
-        nav.droneWayPoints = []
-        publish_cmd(goal)
-        rate.sleep()
+        if path_ok != 1:
+            path_ok = input('Is the path ok (y=1/n=0)?: ')
+        
+        if path_ok == 1:
+            for goal in nav.droneWayPoints:
+                publish_path(goal, color=[1.0, 0.0, 0.0], id=id)
+                id += 1
+                tol = 0.1
+                while math.sqrt( (pos.pose.position.x - goal[0])**2 + (pos.pose.position.y - goal[1])**2 + (pos.pose.position.z - goal[2])**2 ) > tol:
+                    publish_cmd(goal)
+                    rate.sleep()
+            nav.droneWayPoints = []
+            publish_cmd(goal)
+            rate.sleep()
 
-
-
-    
 
 if __name__ == '__main__':
     main()

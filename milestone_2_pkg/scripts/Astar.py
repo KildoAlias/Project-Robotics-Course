@@ -14,6 +14,29 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
 
+class hashtable():
+    def __init__(self):
+        self.table = {}
+
+    def __getitem__(self, key):
+        try:
+            value = self.table[key].pop(0)
+            if self.table[key] == []:
+                del self.table[key]
+            return value
+        except:
+            print("Invalid key!")
+            return None
+
+    def __setitem__(self, key, value):
+        try:
+            if self.table[key]:
+                self.table[key].append(value)
+        except:
+            self.table[key] = []
+            self.table[key].append(value)
+  
+
 def cuboid_data(o, size=(1,1,1)):
     # code taken from
     # https://stackoverflow.com/a/35978146/4124317
@@ -90,8 +113,8 @@ class Astar():
             pos_stop = np.array(wall["plane"]["stop"])
             size = np.subtract(pos_stop, pos_start)
             if pos_start[0]-pos_stop[0] == 0: size[0] = 0.2
-            elif pos_start[1]-pos_stop[1] == 0: size[1] = 0.25
-            elif pos_start[2]-pos_stop[2] == 0: size[2] = 0.2
+            if pos_start[1]-pos_stop[1] == 0: size[1] = 0.25
+            if pos_start[2]-pos_stop[2] == 0: size[2] = 0.2
             plotCubeAt(pos=pos_start, size=size, ax=ax, color=self.WALL["color"])
 
         x_line = []
@@ -171,6 +194,7 @@ class Astar():
             point.append(p[1]*self.discretization + self.Y_limit["min"])
             point.append(p[2]*self.discretization + self.Z_limit["min"])
             self.droneWayPoints.insert(0,point)
+
     class Astar_node():
         def __init__(self, position, parent = None, cost = 0):
             self.position = position
@@ -204,7 +228,9 @@ class Astar():
     def heuristic(self, current, START, GOAL):
         costToGo = sqrt( (current.position[0] - GOAL[0])**2 + (current.position[1] - GOAL[1])**2 + (current.position[2] - GOAL[2])**2 )
         costToHome = sqrt( (current.position[0] - START[0])**2 + (current.position[1] - START[1])**2 + (current.position[2] - START[2])**2 )
-        return costToGo + costToHome
+        wantedHeight = (current.position[2] - GOAL[2])**2
+      
+        return costToGo + costToHome + wantedHeight
 
     def getPath(self):
         self.getGrid()
@@ -232,12 +258,13 @@ class Astar():
         # Initilizing start node.
         start = self.Astar_node(START)
         start.cost = self.heuristic(start, START, GOAL)
-        openSet = {}
+        openSet = hashtable()
         openSet[start.cost] = start
+
 
         tol = 2 # number of grids from. 
         while openSet != {}:
-            current = openSet.pop(min(openSet))
+            current = openSet[min(openSet.table)]
 
             if sqrt( (current.position[0] - GOAL[0])**2 + (current.position[1] - GOAL[1])**2 + (current.position[2] - GOAL[2])**2 ) < tol:
                 return self.reconstruct_path(current)
@@ -251,17 +278,13 @@ class Astar():
         print("OBS! No path found.")
         return False
 
-        
-
-
-
 
 
 
 def main():
-    nav = Astar("comp.world.json",0.25)
-    nav.start = [5.5,4,0]
-    nav.goal = [2,4,1]
+    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
+    nav.start = [0, 0, 0]
+    nav.goal = [2, 2, 0.4]
     nav.getPath()
     nav.printMAP()
     print(nav.droneWayPoints)
