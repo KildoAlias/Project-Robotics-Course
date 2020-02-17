@@ -18,7 +18,7 @@
   -->
 
   <arg name="marker_size"       default="0.20"/>    <!-- in m -->
-  <arg name="ch"/>
+  <arg name="ch"                default="86"/>
   <arg name="uri"               default="radio://0/$(arg ch)/2M" />
 
   <arg name="use_camera"    default="1"/>

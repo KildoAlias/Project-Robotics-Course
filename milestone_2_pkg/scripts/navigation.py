@@ -55,13 +55,13 @@ pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
 
 def main():
     global pos
-    rate = rospy.Rate(20)  # Hz
-    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
-    nav.start = [0, 0, 0]
+    rate = rospy.Rate(30)  # Hz
+    rospy.sleep(2)
+    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
+    nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.2]
     nav.goal = [2, 2, 0.4]
     nav.getPath()
-    nav.printMAP()
-    plt.show()
+
     path_ok = 0
 
     while not rospy.is_shutdown():
@@ -78,7 +78,7 @@ def main():
             for goal in nav.droneWayPoints:
                 publish_path(goal, color=[1.0, 0.0, 0.0], id=id)
                 id += 1
-                tol = 0.1
+                tol = 0.2
                 while math.sqrt( (pos.pose.position.x - goal[0])**2 + (pos.pose.position.y - goal[1])**2 + (pos.pose.position.z - goal[2])**2 ) > tol:
                     publish_cmd(goal)
                     rate.sleep()
