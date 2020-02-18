@@ -24,7 +24,7 @@ def transform_camera(marker):
     t.child_frame_id = 'aruco/detected' + str(marker.id)
     t.transform.translation = marker.pose.pose.position
     t.transform.rotation = marker.pose.pose.orientation
-    t.transform.translation.z = t.transform.translation.z + 0.4 
+    t.transform.translation.z = t.transform.translation.z + 1
     br2.sendTransform(t)    
 
 def transform_marker(data):

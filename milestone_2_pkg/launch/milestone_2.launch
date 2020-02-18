@@ -96,6 +96,7 @@
 
   <node pkg="topic_tools" type="transform" name="base_link_publisher" args="/cf1/pose /tf tf/tfMessage '[[geometry_msgs.msg.TransformStamped(m.header, &quot;cf1/base_link&quot;, geometry_msgs.msg.Transform(m.pose.position, m.pose.orientation))]]' -i geometry_msgs" />
 
+
 <!-- * ! NOTE: ADDED -->
   <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_base2camera" args="0.01 0 0.02 1.5707963267948966 3.141592653589793 1.5707963267948966 base_link cf1/camera_link" />
   <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_map2odom" args="0 0 0 0 0 0 map cf1/odom" /> 
