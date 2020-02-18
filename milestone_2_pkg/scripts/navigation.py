@@ -25,6 +25,10 @@ def publish_path(goal, color = [0.0, 1.0, 0.0], id = 0):
     marker.header.frame_id = 'map'
     marker.header.stamp = rospy.Time()
     marker.type = 2
+    [marker.pose.orientation.x,
+    marker.pose.orientation.y,
+    marker.pose.orientation.z,
+    marker.pose.orientation.w] = quaternion_from_euler(0,0,0)
     marker.pose.position.x = goal[0]
     marker.pose.position.y = goal[1]
     marker.pose.position.z = goal[2]
@@ -57,10 +61,12 @@ def main():
     global pos
     rate = rospy.Rate(30)  # Hz
     rospy.sleep(2)
-    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
+    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
     nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.2]
-    nav.goal = [2, 2, 0.4]
+    nav.goal = [6, 0, 0.4]
     nav.getPath()
+    nav.printMAP()
+    plt.show()
 
     path_ok = 0
 
@@ -87,5 +93,5 @@ def main():
             rate.sleep()
 
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     main()

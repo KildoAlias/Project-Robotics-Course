@@ -78,7 +78,8 @@ class Astar():
         self.rows = None
         self.cols = None
         self.depth = None
-        
+        self.cSpace = 0.3
+
         self.start = None
         self.goal = None
         self.position = None
@@ -112,9 +113,9 @@ class Astar():
             pos_start = np.array(wall["plane"]["start"])
             pos_stop = np.array(wall["plane"]["stop"])
             size = np.subtract(pos_stop, pos_start)
-            if pos_start[0]-pos_stop[0] == 0: size[0] = 0.2
-            if pos_start[1]-pos_stop[1] == 0: size[1] = 0.25
-            if pos_start[2]-pos_stop[2] == 0: size[2] = 0.2
+            if pos_start[0]-pos_stop[0] == 0: size[0] = self.cSpace
+            if pos_start[1]-pos_stop[1] == 0: size[1] = self.cSpace
+            if pos_start[2]-pos_stop[2] == 0: size[2] = self.cSpace
             plotCubeAt(pos=pos_start, size=size, ax=ax, color=self.WALL["color"])
 
         x_line = []
@@ -156,9 +157,9 @@ class Astar():
         self.Z_limit["min"] = self.world["airspace"]["min"][2]
         self.Z_limit["max"] = self.world["airspace"]["max"][2]
 
-        self.rows = int((self.X_limit["max"] - self.X_limit["min"])/self.discretization)
-        self.cols = int((self.Y_limit["max"] - self.Y_limit["min"])/self.discretization)
-        self.depth = int((self.Z_limit["max"] - self.Z_limit["min"])/self.discretization)
+        self.rows = int((self.X_limit["max"] - self.X_limit["min"])/self.discretization) + 1
+        self.cols = int((self.Y_limit["max"] - self.Y_limit["min"])/self.discretization) + 1
+        self.depth = int((self.Z_limit["max"] - self.Z_limit["min"])/self.discretization) + 1
         self.grid = np.zeros((self.rows, self.cols, self.depth))
 
         # If we want prints set VEROSE to True.
@@ -173,16 +174,16 @@ class Astar():
     def addWalls(self):
         # Adding wall to the grid. 
         for wall in self.world["walls"]:
-            x_start = (wall["plane"]["start"][0] - 0.5)/self.discretization
-            x_stop = (wall["plane"]["stop"][0] + 0.5)/self.discretization
+            x_start = (wall["plane"]["start"][0] - self.cSpace)/self.discretization
+            x_stop = (wall["plane"]["stop"][0] + self.cSpace)/self.discretization
             if self.VERBOSE == True:
                 print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
             for x in range(int(x_start), int(x_stop)):
-                y_start = (wall["plane"]["start"][1] - 0.5)/self.discretization
-                y_stop = (wall["plane"]["stop"][1] + 0.5)/self.discretization
+                y_start = (wall["plane"]["start"][1] - self.cSpace)/self.discretization
+                y_stop = (wall["plane"]["stop"][1] + self.cSpace)/self.discretization
                 for y in range(int(y_start), int(y_stop)):
-                    z_start = (wall["plane"]["start"][2] - 0.25)/self.discretization
-                    z_stop = (wall["plane"]["stop"][2] + 0.25)/self.discretization
+                    z_start = (wall["plane"]["start"][2] - self.cSpace)/self.discretization
+                    z_stop = (wall["plane"]["stop"][2] + self.cSpace)/self.discretization
                     for z in range(int(z_start), int(z_stop)):
                         if self.ifValid([x,y,z]):
                             self.grid[x][y][z] = self.WALL["index"]
@@ -246,6 +247,10 @@ class Astar():
         GOAL.append(int(self.goal[1]/self.discretization - self.Y_limit["min"]/self.discretization))
         GOAL.append(int(self.goal[2]/self.discretization - self.Z_limit["min"]/self.discretization))
 
+        if self.VERBOSE == True:
+            print("START: ", START)
+            print("GOAL: ", GOAL)
+            
         if not self.ifValid(GOAL):
             print("NOT A VALID GOAL POINT")
             print(GOAL)
@@ -263,7 +268,7 @@ class Astar():
 
 
         tol = 2 # number of grids from. 
-        while openSet != {}:
+        while openSet.table != {}:
             current = openSet[min(openSet.table)]
 
             if sqrt( (current.position[0] - GOAL[0])**2 + (current.position[1] - GOAL[1])**2 + (current.position[2] - GOAL[2])**2 ) < tol:
@@ -282,13 +287,12 @@ class Astar():
 
 
 def main():
-    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
+    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2, VERBOSE=1)
     nav.start = [0, 0, 0]
-    nav.goal = [2, 2, 0.4]
+    nav.goal = [6, 0, 0.4]
     nav.getPath()
     nav.printMAP()
     print(nav.droneWayPoints)
     plt.show()
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
-
