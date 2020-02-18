@@ -65,13 +65,17 @@ def main():
     nav.goal = [6, 0.1, 0.4]
     nav.getPath()
 
+    
+
     path_ok = 0
 
     while not rospy.is_shutdown():
         id = 0
-        for goal in nav.droneWayPoints:
-            publish_path(goal, id=id)
-            id += 1
+        if path_ok == 0:
+            for goal in nav.droneWayPoints:
+                publish_path(goal, id=id)
+                id += 1
+                rate.sleep()
 
         id = 0
         if path_ok != 1:
