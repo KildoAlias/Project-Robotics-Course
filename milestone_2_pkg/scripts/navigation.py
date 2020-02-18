@@ -60,7 +60,6 @@ pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
 def main():
     global pos
     rate = rospy.Rate(30)  # Hz
-    rospy.sleep(2)
     nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2)
     nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.2]
     nav.goal = [6, 0.1, 0.4]
