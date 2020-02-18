@@ -31,15 +31,19 @@ def aruco_position(data):
     marker.pose.position.x = 0
     marker.pose.position.y = 0.5
     marker.pose.position.z = 0
+    marker.pose.orientation = data.markers[0].pose.pose.orientation
+    # [marker.pose.orientation.x,
+    # marker.pose.orientation.y,
+    # marker.pose.orientation.z,
+    # marker.pose.orientation.w ] = quaternion_from_euler(0, 0, math.radians(0)) 
     
+
     if not tf_buf.can_transform(marker.header.frame_id, 'map', marker.header.stamp, rospy.Duration(0.5)):
         rospy.logwarn_throttle(5.0, 'No transform from %s to map' % marker.header.frame_id)
         return
 
     pose_odom = tf_buf.transform(marker, 'map', rospy.Duration(0.5))
 
-    # orientation_euler = [pose_odom.pose.pose.orientation.x, pose_odom.pose.pose.orientation.y, pose_odom.pose.pose.orientation.z, pose_odom.pose.pose.orientation.w]
-    # (ex, ey, ez) = euler_from_quaternion (orientation_euler)
 
     x = pose_odom.pose.position.x
     y = pose_odom.pose.position.y
@@ -51,6 +55,9 @@ def aruco_position(data):
                                               pose_odom.pose.orientation.z,
                                               pose_odom.pose.orientation.w))
 
+    yaw = math.degrees(yaw)
+
+    rospy.loginfo(yaw)
     detected = True
  
     
@@ -65,7 +72,9 @@ def set_pose(msg):
                                                 msg.pose.orientation.y,
                                                 msg.pose.orientation.z,
                                                 msg.pose.orientation.w))
-   
+
+
+    cur_yaw = math.degrees(cur_yaw)
 
 
 
@@ -76,8 +85,6 @@ def cmd_func(msg):
         set_pose(msg)
         count = 1
 
-    # rospy.loginfo(msg)
-
     z_dist = 0.4
     diff_z = abs(msg.pose.position.z - z_dist)
 
@@ -85,6 +92,7 @@ def cmd_func(msg):
     cmd.header.stamp = rospy.Time.now()
     cmd.header.frame_id = msg.header.frame_id
 
+## TAKE OFF ################# 
     if state == 0:
         cmd.x = cur_x
         cmd.y = cur_y
@@ -97,10 +105,18 @@ def cmd_func(msg):
             rospy.sleep(0.2)
             set_pose(msg)
             state = 1
-
+############################
 
     if state == 1:
-        if detected == True:
+        if detected == False:
+            cmd.x = cur_x
+            cmd.y = cur_y
+            cmd.z = cur_z
+            cmd.yaw = cur_yaw
+            pub_cmd.publish(cmd)
+            rospy.sleep(0.2)
+
+        else:
             set_pose(msg)
             cmd.x = x
             cmd.y = y
@@ -109,13 +125,7 @@ def cmd_func(msg):
             pub_cmd.publish(cmd)
             detected = False
             rospy.sleep(0.2)
-        else:
-            cmd.x = cur_x
-            cmd.y = cur_y
-            cmd.z = cur_z
-            cmd.yaw = cur_yaw
-            pub_cmd.publish(cmd)
-            rospy.sleep(0.2)
+  
 
 
 
