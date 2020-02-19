@@ -17,7 +17,8 @@ detected = False
 stand_pos = True
 pos = { 'x':0,
         'y':0,
-        'z':0}
+        'z':0,
+        'yaw':0}
 goal = {'x':0,
         'y':0,
         'z':0,
@@ -31,7 +32,7 @@ def relativePose_callback(data):
     marker.header.stamp = rospy.Time.now()
     marker.header.frame_id = 'aruco/detected' + str(data.markers[0].id)
     marker.pose.position.x = 0
-    marker.pose.position.y = 0.8
+    marker.pose.position.y = 0.5
     marker.pose.position.z = 0
     [marker.pose.orientation.x,
     marker.pose.orientation.y,
@@ -62,7 +63,7 @@ def getPosition_callback(msg):
     pos['x'] = msg.pose.position.x
     pos['y'] = msg.pose.position.y
     pos['z'] = msg.pose.position.z
-
+    pos['yaw'] = msg.pose.orientation.yaw
 
 rospy.init_node("relative_pose")
 sub_det = rospy.Subscriber('/aruco/markers', MarkerArray, relativePose_callback)
@@ -89,8 +90,8 @@ def main():
             while math.sqrt((z_dist-pos['z'])**2) > tol_takeOff:
                 cmd.header.stamp = rospy.Time.now()
                 cmd.header.frame_id = "map"
-                cmd.x = 0
-                cmd.y = 0
+                cmd.x = pos['x']
+                cmd.y = pos['y']
                 cmd.z = 0.4
                 cmd.yaw = 0
                 pub_cmd.publish(cmd)
@@ -101,7 +102,7 @@ def main():
             
             if detected == True:
                 rospy.loginfo("detected")
-                while math.sqrt((goal['x']-pos['x'])**2 + (goal['y']-pos['y'])**2 + (goal['z']-pos['z'])**2) > tol2:
+                while math.sqrt((goal['x']-pos['x'])**2 + (goal['y']-pos['y'])**2 + (goal['z']-pos['z']+ (goal['yaw']-pos['yaw'])**2) > tol2:
                     cmd.header.stamp = rospy.Time.now()
                     cmd.header.frame_id = "map"
                     cmd.x = goal['x']
