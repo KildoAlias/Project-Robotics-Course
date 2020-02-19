@@ -10,6 +10,8 @@ from crazyflie_driver.msg import Position
 from Astar import Astar
 import matplotlib.pyplot as plt
 from aruco_msgs.msg import MarkerArray
+from std_srvs.srv import Empty
+
 
 
 # GLOBAL VARIABLES
@@ -76,14 +78,20 @@ pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=5)
 tf_buf   = tf2_ros.Buffer()
 tf_lstn  = tf2_ros.TransformListener(tf_buf)
 
+rospy.wait_for_service('checkpointspin_server')
+checkpointspin_server = rospy.ServiceProxy('checkpointspin_server', Empty)
+
+
+
 
 def main():
     global pos, goal, detected
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(5)
     z_dist = 0.4
     tol_takeOff = 0.05
     tol2 = 0.1
     takeOff = True
+    spin = True
     cmd = Position()
 
     while not rospy.is_shutdown():
@@ -97,7 +105,7 @@ def main():
                 cmd.x = pos['x']
                 cmd.y = pos['y']
                 cmd.z = 0.4
-                cmd.yaw = 0
+                cmd.yaw = pos['yaw']
                 pub_cmd.publish(cmd)
                 rate.sleep()
             print("done")
@@ -106,7 +114,8 @@ def main():
             
             if detected == True:
                 rospy.loginfo("detected")
-                while math.sqrt((goal['x']-pos['x'])**2 + (goal['y']-pos['y'])**2 + (goal['z']-pos['z'])**2 + (goal['yaw']-pos['yaw'])**2) > tol2:
+
+                while math.sqrt((goal['x']-pos['x'])**2 + (goal['y']-pos['y'])**2 + (goal['z']-pos['z'])**2 ) > tol2:
                     cmd.header.stamp = rospy.Time.now()
                     cmd.header.frame_id = "map"
                     cmd.x = goal['x']
@@ -115,7 +124,14 @@ def main():
                     cmd.yaw = goal['yaw'] 
                     pub_cmd.publish(cmd)
                     rate.sleep()
+
                 detected = False
+
+                if(spin == True):
+                    rospy.sleep(1.5)
+                    checkpointspin_server()
+                    spin = False
+
             else:
                 cmd.header.stamp = rospy.Time.now()
                 cmd.header.frame_id = "map"
