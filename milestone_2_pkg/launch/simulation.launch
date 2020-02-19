@@ -2,7 +2,7 @@
 
 <launch>
   <arg name="mav_name" default="crazyflie"/>
-  <arg name="world_name" default="test"/>
+  <arg name="world_name" default="awesome"/>
   <arg name="debug" default="false"/>
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
@@ -129,6 +129,9 @@
   <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_baselink2baselink" args="0 0 0 0 0 0 cf1/base_link base_link" /> 
   <node pkg="rviz" type="rviz" name="rviz" />
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
-
+  <!-- Adding aruco camera -->
+  <include file="$(find dd2419_simulation)/launch/aruco.launch">
+     <arg name="gui" value="false" />
+  </include>
 
 </launch>

@@ -31,17 +31,14 @@ def publish_wall(center, size, id = 0):
     marker.scale.y = size[1]
     marker.scale.z = size[2]
     marker.header.stamp = rospy.Time()
-    
-    rospy.loginfo('hejhej')
-    print(marker)
     pub_wall.publish(marker)
 
 
-def publish_airspace(line, size, id=0):
+def publish_airspace(line, size, id=100):
     marker = Marker()
     marker.id = id
     marker.header.frame_id = 'map'
-    marker.type = 4
+    marker.type = 1
     [marker.pose.orientation.x,
     marker.pose.orientation.y,
     marker.pose.orientation.z,
@@ -51,17 +48,20 @@ def publish_airspace(line, size, id=0):
     marker.pose.position.z = 0
     marker.color.a = 1
     marker.color.r = 1.0
-    marker.color.g = 0.2
-    marker.color.b = 0.0
+    marker.color.g = 0.5
+    marker.color.b = 0.1
     marker.scale.x = size[0]
     marker.scale.y = size[1]
-    marker.scale.z = 0.1
+    marker.scale.z = 0.01
     marker.header.stamp = rospy.Time()
+    pub_wall.publish(marker)
 
 rospy.init_node('walls')
 pub_wall = rospy.Publisher('visualization_marker', Marker, queue_size=20)
 
 def main():
+    rospy.loginfo("Initilizing the world map...")
+    rospy.loginfo("done initilizing.")
     rate = rospy.Rate(30)  # Hz
     cSpace=0.2
     jsonfile="/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json"
@@ -83,22 +83,17 @@ def main():
             rate.sleep()
 
         
-        line=world["airspace"]:
+        line=world["airspace"]
         pos_start = np.array(line["min"])
         pos_stop = np.array(line["max"])
-        sizeX=pos_stop[0]-pos_start[0]
-        sizeY=pos_stop[1]-pos_start[1]
-        P1=[sizeX,pos_start[1]]
-        publish_airspace(P1, [sizeX,0.1], id)
-        P2=[sizeX,pos_stop[1]]
-        id += 1
-        publish_airspace(P2, [sizeX,0.1], id)
-        P3=[sizeY,pos_start[0]]
-        id += 1
-        publish_airspace(P3, [0.1,sizeY], id)
-        P4=[sizeY,pos_stop[0]]
-        id += 1
-        publish_airspace(P4, [0.1,sizeY], id)
+        sizeX = pos_stop[0]-pos_start[0]
+        sizeY = pos_stop[1]-pos_start[1]
+        CP = np.subtract(pos_stop, pos_start)/2
+
+
+        publish_airspace(CP, [sizeX,sizeY])
+        rate.sleep()
+        
 
 
 
