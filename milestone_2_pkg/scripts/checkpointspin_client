@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+# import rospy
+# from geometry_msgs.msg import PoseStamped
+# from crazyflie_driver.msg import Position
+# from visualization_msgs.msg import MarkerArray
+
+# rospy.init_node('checkpointspin')
+# sub_goal_pose = rospy.Subscriber('/cf1/pose', PoseStamped, cmd_func)
+# pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=2)
+# sub_goal_marker=rospy.Subscriber('/aruco/markers', MarkerArray, cmd_func)
+
+import rospy
+from std_srvs.srv import Empty
+
+def main():
+    rospy.wait_for_service('checkpointspin_server')
+    checkpointspin_server = rospy.ServiceProxy('checkpointspin_server', Empty)
+    rospy.loginfo('Calling server')
+    checkpointspin_server()
+    # try:
+    #     resp1 = spin()
+    # except rospy.ServiceException as exc:
+    #     print("Service did not process request: " + str(exc))
+
+if __name__ == "__main__":
+    rospy.init_node('checkpointspin_client')
+    main()
+    rospy.spin()    
