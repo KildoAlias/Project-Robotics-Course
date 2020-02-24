@@ -83,6 +83,7 @@ br = tf2_ros.StaticTransformBroadcaster()
 sub_det = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, darknet_callback)
 
 def main():
+    rospy.loginfo("Initilizing object position")
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
         if goal:

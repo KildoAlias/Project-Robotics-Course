@@ -23,19 +23,21 @@ def transform_from_marker(m):
                                                      math.radians(yaw))
     return t
 
-def main(argv=sys.argv):
-    # Let ROS filter through the arguments
-    args = rospy.myargv(argv=argv)
+rospy.init_node('displaymapobjects')
+
+def main():
+    rospy.loginfo("Initilizing object broadcaster")
+ 
+    args = "/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json"
 
     # Load world JSON
-    with open(args[1], 'rb') as f:
+    with open(args, 'rb') as f:
         world = json.load(f)
 
     # Create a transform for each marker
     transforms = [transform_from_marker(m) for m in world['roadsigns']]
 
     # Publish these transforms statically forever
-    rospy.init_node('displaymapobjects')
     broadcaster = tf2_ros.StaticTransformBroadcaster()
     broadcaster.sendTransform(transforms)
     rospy.spin()

@@ -64,7 +64,7 @@ def main():
     rospy.loginfo("done initilizing.")
     rate = rospy.Rate(30)  # Hz
     cSpace=0.2
-    jsonfile="/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json"
+    jsonfile="/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json"
     with open(jsonfile, 'rb') as f:
         world = json.load(f)
     init = False

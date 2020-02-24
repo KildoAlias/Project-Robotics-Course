@@ -287,7 +287,7 @@ class Astar():
 
 
 def main():
-    nav = Astar("/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_2_pkg/worlds/test.world.json",0.2, VERBOSE=1)
+    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json",0.2, VERBOSE=1)
     nav.start = [0, 0, 0]
     nav.goal = [6, 0, 0.4]
     nav.getPath()
