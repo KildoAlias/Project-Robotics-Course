@@ -200,6 +200,7 @@ class Astar():
         def __init__(self, position, parent = None, cost = 0):
             self.position = position
             self.cost = cost
+            self.costToHome = 0
             self.parent = parent
 
     def reconstruct_path(self, current):
@@ -223,15 +224,29 @@ class Astar():
                         z_pos = current.position[2] + z
                         pos = [x_pos, y_pos, z_pos]
                         if self.ifValid(pos):
-                             neigh.append( self.Astar_node(pos, current) )
+                            if (x == 1 or x == -1) and (y == 1 or y == -1) and z == 0: 
+                                D = sqrt(2)
+                            elif (x == 1 or x == -1) and y == 0 and (z == 1 or z == -1): 
+                                D = sqrt(2) 
+                            elif x == 0 and (y == 1 or y == -1) and (z == 1 or z == -1): 
+                                D = sqrt(2) 
+                            elif (x == 1 or x == -1) and (y == 1 or y == -1) and (z == 1 or z == -1): 
+                                D = 2*sqrt(2)
+                            else: 
+                                D = 1
+                            N = self.Astar_node(pos, current)
+                            N.costToHome = current.costToHome + D
+                            neigh.append( N )
         return neigh
 
     def heuristic(self, current, START, GOAL):
-        costToGo = sqrt( (current.position[0] - GOAL[0])**2 + (current.position[1] - GOAL[1])**2 + (current.position[2] - GOAL[2])**2 )
-        costToHome = sqrt( (current.position[0] - START[0])**2 + (current.position[1] - START[1])**2 + (current.position[2] - START[2])**2 )
-        wantedHeight = (current.position[2] - GOAL[2])**2
-      
-        return costToGo + costToHome + wantedHeight
+        dx = abs(GOAL[0]-current.position[0])
+        dy = abs(GOAL[1]-current.position[1])
+        dz = abs(GOAL[2]-current.position[2])
+        costToGo = min([dx,dy,dz])     
+        current.costToHome = current.costToHome
+
+        return costToGo + current.costToHome
 
     def getPath(self):
         self.getGrid()
@@ -287,12 +302,11 @@ class Astar():
 
 
 def main():
-    nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json",0.2, VERBOSE=1)
-    nav.start = [0, 0, 0]
-    nav.goal = [6, 0, 0.4]
+    nav = Astar("/home/hackerman/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json",0.1, VERBOSE=1)
+    nav.start = [0, 0, 0.4]
+    nav.goal = [3, 0, 0.4]
     nav.getPath()
     nav.printMAP()
-    print(nav.droneWayPoints)
     plt.show()
 
 if __name__ == "__main__":

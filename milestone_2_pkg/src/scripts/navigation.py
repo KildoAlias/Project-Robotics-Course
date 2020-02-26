@@ -61,7 +61,7 @@ def main():
     global pos
     rate = rospy.Rate(20)  # Hz
     nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json",0.1)
-    nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.2]
+    nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.4]
     nav.goal = [2.7, 1, 0.4]
     nav.getPath()
 
