@@ -74,9 +74,10 @@ def handle_spin(empty):
 
  
 
+rospy.init_node('checkpointspin_server')
+
 
 def checkpointspin_server():
-    rospy.init_node('checkpointspin_server')
     rospy.loginfo("Checkpoint service ready")
     s = rospy.Service('checkpointspin_server', Empty, handle_spin)
     rospy.spin()
