@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-
 import math
 import rospy
 import tf2_ros
 import tf2_geometry_msgs
+from std_srvs.srv import Empty, EmptyResponse
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import PoseStamped
 from visualization_msgs.msg import Marker
@@ -11,13 +11,6 @@ from crazyflie_driver.msg import Position
 from Astar import Astar
 import matplotlib.pyplot as plt
 
-# Current goal (global state)
-goal = []
-pos = PoseStamped()
-
-def position_callback(msg):
-    global pos
-    pos = msg
 
 def publish_path(goal, color = [0.0, 1.0, 0.0], id = 0):
     marker = Marker()
@@ -52,13 +45,11 @@ def publish_cmd(goal):
     pub_cmd.publish(cmd)
 
 
-rospy.init_node('navigation')
-sub_pos = rospy.Subscriber('/cf1/pose', PoseStamped, position_callback)
-pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=2)
-pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
 
 def main():
-    global pos
+    rospy.loginfo('Waiting for pose message...')
+    pos=rospy.wait_for_message('/cf1/pose',PoseStamped) 
+
     rate = rospy.Rate(20)  # Hz
     nav = Astar("/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json",0.1)
     nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.4]
@@ -92,5 +83,18 @@ def main():
             rate.sleep()
 
 
-if __name__ == '__main__':
-    main()
+
+def path_server():
+    rospy.loginfo("Path planning service ready")
+    s = rospy.Service('path_server', Empty, main())
+    rospy.spin()
+
+
+
+if __name__ == "__main__":
+    rospy.init_node('path_server')
+    pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=2)
+    pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
+    goal = [] # Current goal (global state)
+    path_server()
+
