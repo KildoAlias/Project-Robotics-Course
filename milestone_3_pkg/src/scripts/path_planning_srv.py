@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from pathlib import Path
 import json
 import math
 import rospy
@@ -17,7 +18,7 @@ from aruco_msgs.msg import MarkerArray
 # Current pos (global state)
 GOAL = []
 pos = PoseStamped()
-mapFile = "/afs/kth.se/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_3_pkg/src/worlds/test.world.json"
+jsonfile = Path("worlds/test.world.json/")
 MARKERS = []
 GOAL_YAW = 0
 USED_ID = []
@@ -43,7 +44,7 @@ def getRelativePose():
     global MARKERS
     
 
-    with open(mapFile, 'rb') as f:
+    with open(jsonfile, 'rb') as f:
             mapInfo = json.load(f)
 
     for m in mapInfo["markers"]:
@@ -142,7 +143,7 @@ def main(empty):
     getNextGoal()   # Get the new goal, closest aruco marker.
     
     # Using Astar to navigate. 
-    nav = Astar(mapFile,  0.1)
+    nav = Astar(jsonfile,  0.1)
     nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.4]
     
     nav.goal = GOAL #[2.7, 1, 0.4]

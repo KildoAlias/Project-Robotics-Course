@@ -6,6 +6,7 @@ import tf2_ros
 import tf2_geometry_msgs
 import numpy as np
 import json
+from pathlib import Path
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import PoseStamped
 from visualization_msgs.msg import Marker
@@ -63,8 +64,8 @@ def main():
     rospy.loginfo("Initilizing the world map...")
     rospy.loginfo("done initilizing.")
     rate = rospy.Rate(30)  # Hz
-    cSpace=0.2
-    jsonfile="/afs/kth.se/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_3_pkg/src/worlds/test.world.json"
+    cSpace = 0.2
+    jsonfile = Path("worlds/test.world.json/")
     with open(jsonfile, 'rb') as f:
         world = json.load(f)
     init = False
