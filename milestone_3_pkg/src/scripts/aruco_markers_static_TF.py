@@ -3,7 +3,7 @@
 import sys
 import math
 import json
-
+from pathlib import Path
 import rospy
 import tf2_ros 
 from tf.transformations import quaternion_from_euler
@@ -25,10 +25,10 @@ def transform_from_marker(m):
 
 def main():
     # Let ROS filter through the arguments
-    args = "/afs/kth.se/home/i/l/ilianc/dd2419_ws/src/project_packages/milestone_3_pkg/src/worlds/test.world.json"
+    jsonfile = Path("worlds/test.world.json/")
 
     # Load world JSON
-    with open(args, 'rb') as f:
+    with open(jsonfile, 'rb') as f:
         world = json.load(f)
 
     # Create a transform for each marker

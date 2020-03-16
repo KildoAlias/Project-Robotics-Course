@@ -3,7 +3,7 @@
 import sys
 import math
 import json
-
+from pathlib import Path
 import rospy
 import tf2_ros 
 from tf.transformations import quaternion_from_euler
@@ -28,10 +28,10 @@ rospy.init_node('displaymapobjects')
 def main():
     rospy.loginfo("Initilizing object broadcaster")
  
-    args = "/home/robot/dd2419_ws/src/project_packages/milestone_2_pkg/src/worlds/test.world.json"
+    jsonfile = Path("worlds/test.world.json/")
 
     # Load world JSON
-    with open(args, 'rb') as f:
+    with open(jsonfile, 'rb') as f:
         world = json.load(f)
 
     # Create a transform for each marker
