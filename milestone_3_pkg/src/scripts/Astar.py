@@ -38,11 +38,11 @@ class hashtable():
         except:
             self.table[key] = []
             self.table[key].append(value)
-  
 
 def cuboid_data(o, size=(1,1,1)):
     # code taken from
     # https://stackoverflow.com/a/35978146/4124317
+    # Includes cuboid_data and plotCubeAt.
     # suppose axis direction: x: to left; y: to inside; z: to upper
     # get the length, width, and height
     l, w, h = size
