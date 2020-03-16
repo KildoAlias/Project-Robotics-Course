@@ -9,6 +9,7 @@ import random
 import matplotlib.pyplot as plt
 import time
 import sys
+import os
 import json
 from pathlib import Path
 import numpy as np
@@ -21,7 +22,7 @@ class hashtable():
 
     def __getitem__(self, key):
         try:
-            value = self.table[key].pop(0)
+            value = self.table[key].pop(-1)
             if self.table[key] == []:
                 del self.table[key]
             return value
@@ -303,7 +304,7 @@ class Astar():
 
 
 def main():
-    jsonfile = Path("worlds/test.world.json/")
+    jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
     print(jsonfile)
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
     nav.start = [0, 0, 0.4]
@@ -314,3 +315,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

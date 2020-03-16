@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import json
+import os
 import math
 import rospy
 import tf2_ros
@@ -18,7 +19,7 @@ from aruco_msgs.msg import MarkerArray
 # Current pos (global state)
 GOAL = []
 pos = PoseStamped()
-jsonfile = Path("worlds/test.world.json/")
+jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
 MARKERS = []
 GOAL_YAW = 0
 USED_ID = []

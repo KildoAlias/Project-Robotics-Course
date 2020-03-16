@@ -2,6 +2,7 @@
 
 import sys
 import math
+import os
 import json
 from pathlib import Path
 import rospy
@@ -25,7 +26,7 @@ def transform_from_marker(m):
 
 def main():
     # Let ROS filter through the arguments
-    jsonfile = Path("worlds/test.world.json/")
+    jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:

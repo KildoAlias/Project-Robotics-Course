@@ -2,6 +2,7 @@
 
 import sys
 import math
+import os
 import json
 from pathlib import Path
 import rospy
@@ -28,7 +29,7 @@ rospy.init_node('displaymapobjects')
 def main():
     rospy.loginfo("Initilizing object broadcaster")
  
-    jsonfile = Path("worlds/test.world.json/")
+    jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:
