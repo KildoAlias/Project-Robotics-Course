@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# {Ilian Corneliussen}
-# {950418-2438}
-# {ilianc@kth.se}
+#
+# ______Author____________
+# Name: Ilian Corneliussen
+# Email: ilianc@kth.se
 
 from math import hypot,pi,sqrt,isinf
 import random
@@ -93,8 +94,6 @@ class Astar():
         self.PATH = {"color": "red", "index": 3} 
         self.START = {"color": "green", "index": 4} 
         self.GOAL = {"color": "yellow", "index": 5}
-        
-
             
     def printMAP(self):
         fig = plt.figure()
