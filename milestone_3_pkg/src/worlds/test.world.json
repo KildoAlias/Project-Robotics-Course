@@ -1,14 +1,16 @@
 {
   "airspace": {
     "min": [0.0, 0.0, 0.0],
-    "max": [3, 1.4, 2]
+    "max": [6, 1.4, 2]
   },
   "gate_size": [0.40, 0.40],
   "marker_size": [0.197, 0.197],
   "roadsign_size": [0.20, 0.20],
 
   "markers": [
-    {"id": 1, "pose": {"position": [4.99, 0.0, 0.105], "orientation": [90.0, -90.0, 0.0]}}
+    {"id": 1, "pose": {"position": [4,  1.0, 0.4], "orientation": [90.0, -90.0, 0]}},
+    {"id": 2, "pose": {"position": [5,  1.0, 0.4], "orientation": [90.0, -90.0, 0]}},
+    {"id": 3, "pose": {"position": [6,  1.0, 0.4], "orientation": [90.0, -90.0, 0]}}
   ],
 
   "gates": [
