@@ -175,19 +175,57 @@ class Astar():
     def addWalls(self):
         # Adding wall to the grid. 
         for wall in self.world["walls"]:
-            x_start = (wall["plane"]["start"][0] - self.cSpace)/self.discretization
-            x_stop = (wall["plane"]["stop"][0] + self.cSpace)/self.discretization
+            delta_x = (wall["plane"]["stop"][0] - wall["plane"]["start"][0])/self.discretization
+            delta_y = (wall["plane"]["stop"][1] - wall["plane"]["start"][1])/self.discretization
             if self.VERBOSE == True:
-                print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
-            for x in range(int(x_start), int(x_stop)):
-                y_start = (wall["plane"]["start"][1] - self.cSpace)/self.discretization
-                y_stop = (wall["plane"]["stop"][1] + self.cSpace)/self.discretization
-                for y in range(int(y_start), int(y_stop)):
-                    z_start = (wall["plane"]["start"][2] - self.cSpace)/self.discretization
-                    z_stop = (wall["plane"]["stop"][2] + self.cSpace)/self.discretization
-                    for z in range(int(z_start), int(z_stop)):
-                        if self.ifValid([x,y,z]):
-                            self.grid[x][y][z] = self.WALL["index"]
+                    print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
+                    print("delta_x = {}, delta_y = {}".format(delta_x,delta_y))
+            if delta_x != 0 and delta_y != 0:
+
+                x_start = (wall["plane"]["start"][0])/self.discretization
+                x_stop = (wall["plane"]["stop"][0])/self.discretization
+                y_start = (wall["plane"]["start"][1])/self.discretization
+                y_stop = (wall["plane"]["stop"][1])/self.discretization
+                z_start = (wall["plane"]["start"][2] - self.cSpace)/self.discretization
+                z_stop = (wall["plane"]["stop"][2] + self.cSpace)/self.discretization
+                tmp = [x_start, x_stop]
+                x_start = min(tmp)
+                x_stop = max(tmp)
+                tmp = [y_start, y_stop]
+                y_start = min(tmp)
+                y_stop = max(tmp)
+                tmp = [z_start, z_stop]
+                z_start = min(tmp)
+                z_stop = max(tmp)
+                # Line equation to estract lines on the walls. 
+                k = delta_y/delta_x
+                m = y_start - k*x_start
+                for z in range(int(z_start), int(z_stop)):
+                    x_line = x_start
+                    while x_line < x_stop:
+                        y_line = k*x_line + m
+                        for x in range(int(x_line - self.cSpace/self.discretization), int(x_line + self.cSpace/self.discretization)):
+                            for y in range(int(y_line - self.cSpace/self.discretization), int(y_line + self.cSpace/self.discretization)):
+                                if self.ifValid([x,y,z]):
+                                    self.grid[x][y][z] = self.WALL["index"]
+                                    if z == 0:
+                                        print("x: {}, y: {}, z: {}".format(x,y,z))
+                        x_line += self.discretization/4
+
+            else:
+                x_start = (wall["plane"]["start"][0] - self.cSpace)/self.discretization
+                x_stop = (wall["plane"]["stop"][0] + self.cSpace)/self.discretization
+                if self.VERBOSE == True:
+                    print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
+                for x in range(int(x_start), int(x_stop)):
+                    y_start = (wall["plane"]["start"][1] - self.cSpace)/self.discretization
+                    y_stop = (wall["plane"]["stop"][1] + self.cSpace)/self.discretization
+                    for y in range(int(y_start), int(y_stop)):
+                        z_start = (wall["plane"]["start"][2] - self.cSpace)/self.discretization
+                        z_stop = (wall["plane"]["stop"][2] + self.cSpace)/self.discretization
+                        for z in range(int(z_start), int(z_stop)):
+                            if self.ifValid([x,y,z]):
+                                self.grid[x][y][z] = self.WALL["index"]
 
     def getWayPoints(self):
         for p in self.path:
@@ -307,11 +345,10 @@ def main():
     print(jsonfile)
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
     nav.start = [0, 0, 0.4]
-    nav.goal = [3, 0, 0.4]
+    nav.goal = [9, 1, 0.4]
     nav.getPath()
     nav.printMAP()
     plt.show()
 
 if __name__ == "__main__":
     main()
-    
