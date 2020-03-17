@@ -12,12 +12,11 @@ from crazyflie_driver.msg import Position
 
 
 def handle_spin(empty):
-    rospy.loginfo('Server called')
+    rospy.loginfo('Spin server called')
 
     state = True
     angle = 0
-    pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=2)
-    rospy.loginfo('Waiting for pose message...')
+    pub_cmd  = rospy.Publisher('hover', Position, queue_size=2)
     msg=rospy.wait_for_message('/cf1/pose',PoseStamped) 
     # rospy.loginfo(msg)
 
@@ -58,11 +57,10 @@ def handle_spin(empty):
         angle = 4
         cmd.yaw = cmd.yaw + angle
 
-        # rospy.loginfo(angle)
         if cmd.yaw >= endYaw:
             cmd.yaw = endYaw - 360
             state = False
-        rospy.loginfo(cmd.yaw)
+
         r.sleep()
         pub_cmd.publish(cmd)
         
