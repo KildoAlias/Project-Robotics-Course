@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from pathlib import Path
+
 import json
 import os
 import math
@@ -19,7 +19,7 @@ from aruco_msgs.msg import MarkerArray
 # Current pos (global state)
 GOAL = []
 pos = PoseStamped()
-jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
+jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
 MARKERS = []
 GOAL_YAW = 0
 USED_ID = []
@@ -145,7 +145,7 @@ def main(empty):
     
     # Using Astar to navigate. 
     nav = Astar(jsonfile,  0.1)
-    nav.start = [pos.pose.position.x, pos.pose.position.y, pos.pose.position.z + 0.4]
+    nav.start = [pos.pose.position.x, pos.pose.position.y, 0.4] # pos.pose.position.z
     
     nav.goal = GOAL #[2.7, 1, 0.4]
     nav.getPath()

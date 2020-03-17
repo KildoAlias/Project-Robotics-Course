@@ -12,7 +12,7 @@ import time
 import sys
 import os
 import json
-from pathlib import Path
+
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -303,7 +303,7 @@ class Astar():
 
 
 def main():
-    jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
+    jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
     print(jsonfile)
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
     nav.start = [0, 0, 0.4]

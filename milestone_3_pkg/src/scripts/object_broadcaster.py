@@ -4,7 +4,7 @@ import sys
 import math
 import os
 import json
-from pathlib import Path
+
 import rospy
 import tf2_ros 
 from tf.transformations import quaternion_from_euler
@@ -29,7 +29,7 @@ rospy.init_node('displaymapobjects')
 def main():
     rospy.loginfo("Initilizing object broadcaster")
  
-    jsonfile = Path(os.path.dirname(__file__) + "/worlds/test.world.json")
+    jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:
