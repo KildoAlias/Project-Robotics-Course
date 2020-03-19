@@ -106,18 +106,23 @@ if __name__ == "__main__":
     rospy.init_node('controller')
     rospy.loginfo('controller started!')
 
+    rospy.loginfo('Waiting for "checkpointspin_server" service ...')
     rospy.wait_for_service('checkpointspin_server')
     checkpointspin_srv = rospy.ServiceProxy('checkpointspin_server', Empty)
     rospy.loginfo('checkpointspin srv started!')
 
+    rospy.loginfo('Waiting for "takeoff" service...')
     rospy.wait_for_service('takeoff')
     takeoff_srv = rospy.ServiceProxy('takeoff', Empty)
     rospy.loginfo('takeoff srv started!')
 
+    rospy.loginfo('Waiting for "path_planning_server" service...')
     rospy.wait_for_service('path_planning_server')
     path_srv = rospy.ServiceProxy('path_planning_server', Empty)
     rospy.loginfo('path planning srv started!')
-
+    
+    
+    rospy.loginfo('All services are running!')
     rospy.sleep(1)
 
     main()
