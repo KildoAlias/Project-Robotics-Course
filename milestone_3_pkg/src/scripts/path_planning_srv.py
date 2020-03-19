@@ -58,7 +58,7 @@ def getRelativePose():
         marker.header.stamp = rospy.Time.now()
         marker.header.frame_id = "aruco/marker"+str(m["id"])
         marker.pose.position.x = 0
-        marker.pose.position.y = 0.5
+        marker.pose.position.y = 0.3
         marker.pose.position.z = 0
         [marker.pose.orientation.x,
         marker.pose.orientation.y,
@@ -127,6 +127,7 @@ def publish_path(goal, color = [0.0, 1.0, 0.0], id = 0):
     marker.scale.x = 0.1
     marker.scale.y = 0.1
     marker.scale.z = 0.1
+    marker.lifetime = rospy.Duration(15)
     pub_path.publish(marker)
 
 

@@ -21,7 +21,7 @@ def publish_wall(center, size, id = 0):
     [marker.pose.orientation.x,
     marker.pose.orientation.y,
     marker.pose.orientation.z,
-    marker.pose.orientation.w] = quaternion_from_euler(0,0,0)
+    marker.pose.orientation.w] = quaternion_from_euler(0, 0, 0)
     marker.pose.position.x = center[0]
     marker.pose.position.y = center[1]
     marker.pose.position.z = center[2]
@@ -72,7 +72,7 @@ def main():
         world = json.load(f)
     init = False
     while not rospy.is_shutdown():
-        id = 0
+        id = 200
         for wall in world["walls"]:
             pos_start = np.array(wall["plane"]["start"])
             pos_stop = np.array(wall["plane"]["stop"])
