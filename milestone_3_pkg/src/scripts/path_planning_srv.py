@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# TODO: get the goal point to the closest marker OR object in euclidan distance
+# TODO: Should always face the closest object
 
 import json
 import os
@@ -87,7 +89,6 @@ def getRelativePose():
 
 def getNextGoal():
     global GOAL, GOAL_YAW
-    # TODO: get the goal point to the closest marker in euclidan distance
     getRelativePose()
     min_dist = 1000000000
     

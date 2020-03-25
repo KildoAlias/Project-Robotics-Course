@@ -2,9 +2,9 @@
 
 <launch>
   <arg name="mav_name" default="crazyflie"/>
-  <arg name="world_name" default="test"/>
+  <arg name="world_name" default="demo01"/>
   <arg name="debug" default="false"/>
-  <arg name="gui" default="false"/>
+  <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
 
   <!-- Camera arguments -->
