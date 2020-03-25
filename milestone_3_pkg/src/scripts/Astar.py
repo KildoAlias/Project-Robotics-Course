@@ -81,7 +81,7 @@ class Astar():
         self.rows = None
         self.cols = None
         self.depth = None
-        self.cSpace = 0.3
+        self.cSpace = 0.2
 
         self.start = None
         self.goal = None
@@ -341,11 +341,11 @@ class Astar():
 
 
 def main():
-    jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
+    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
     print(jsonfile)
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
-    nav.start = [0, 0, 0.4]
-    nav.goal = [9, 1, 0.4]
+    nav.start = [-0.2, 0.4, 0.4]
+    nav.goal = [-0.2, -0.4, 0.4]
     nav.getPath()
     nav.printMAP()
     plt.show()

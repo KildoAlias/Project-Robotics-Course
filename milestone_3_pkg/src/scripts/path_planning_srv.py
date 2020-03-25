@@ -21,7 +21,7 @@ from aruco_msgs.msg import MarkerArray
 # Current pos (global state)
 GOAL = []
 pos = PoseStamped()
-jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
+jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
 MARKERS = []
 GOAL_YAW = 0
 USED_ID = []
@@ -50,7 +50,7 @@ def getRelativePose():
     with open(jsonfile, 'rb') as f:
             mapInfo = json.load(f)
 
-    for m in mapInfo["markers"]:
+    for m in mapInfo["roadsigns"]:
         goal = {'ID':None,
                 'x':0,
                 'y':0,
@@ -58,9 +58,9 @@ def getRelativePose():
                 'yaw':0}
         marker = PoseStamped()
         marker.header.stamp = rospy.Time.now()
-        marker.header.frame_id = "aruco/marker"+str(m["id"])
+        marker.header.frame_id = "sign/"+str(m["sign"])
         marker.pose.position.x = 0
-        marker.pose.position.y = 0.3
+        marker.pose.position.y = 0.2
         marker.pose.position.z = 0
         [marker.pose.orientation.x,
         marker.pose.orientation.y,
@@ -74,7 +74,7 @@ def getRelativePose():
         # Does the transform
         pose_odom = tf_buf.transform(marker, 'map', rospy.Duration(0.5))
 
-        goal['ID'] = str(m["id"])
+        goal['ID'] = str(m["sign"])
         goal['x'] = pose_odom.pose.position.x
         goal['y'] = pose_odom.pose.position.y
         goal['z'] = pose_odom.pose.position.z
@@ -147,7 +147,7 @@ def main(empty):
     
     # Using Astar to navigate. 
     nav = Astar(jsonfile,  0.1)
-    nav.start = [pos.pose.position.x, pos.pose.position.y, 0.4] # pos.pose.position.z
+    nav.start = [pos.pose.position.x, pos.pose.position.y, 0.05] # pos.pose.position.z
     
     nav.goal = GOAL #[2.7, 1, 0.4]
     nav.getPath()

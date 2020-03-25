@@ -61,12 +61,15 @@ def publish_airspace(line, size, id=100):
 rospy.init_node('walls')
 pub_wall = rospy.Publisher('visualization_marker', Marker, queue_size=20)
 
+
+
+
 def main():
     rospy.loginfo("Initilizing the world map...")
     rospy.loginfo("done initilizing.")
     rate = rospy.Rate(30)  # Hz
     cSpace = 0.2
-    jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
+    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
     print(jsonfile)
     with open(jsonfile, 'rb') as f:
         world = json.load(f)
@@ -89,9 +92,11 @@ def main():
         line=world["airspace"]
         pos_start = np.array(line["min"])
         pos_stop = np.array(line["max"])
+        
         sizeX = pos_stop[0]-pos_start[0]
         sizeY = pos_stop[1]-pos_start[1]
-        CP = np.subtract(pos_stop, pos_start)/2
+        
+        CP = np.add(pos_start, np.abs(np.subtract(pos_stop, pos_start)/2)) # np.addition(pos_start, np.abs(np.subtract(pos_stop, pos_start)/2))
 
 
         publish_airspace(CP, [sizeX,sizeY])

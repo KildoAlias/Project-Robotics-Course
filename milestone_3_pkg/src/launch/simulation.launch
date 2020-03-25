@@ -4,7 +4,7 @@
   <arg name="mav_name" default="crazyflie"/>
   <arg name="world_name" default="demo01"/>
   <arg name="debug" default="false"/>
-  <arg name="gui" default="true"/>
+  <arg name="gui" default="false"/>
   <arg name="paused" default="false"/>
 
   <!-- Camera arguments -->
@@ -143,6 +143,7 @@
   <node pkg="milestone_3_pkg" type="aruco_markers_static_TF.py" name="aruco_markers_static"/>
   <node pkg="milestone_3_pkg" type="hover.py" name="hover"/>
   <node pkg="milestone_3_pkg" type="path_planning_srv.py" name="path_planning_srv"/>
+  <node pkg="milestone_3_pkg" type="takeoff.py" name="takeoff_srv"/>
 
 
   <!-- Adding aruco camera -->

@@ -13,7 +13,7 @@ from geometry_msgs.msg import TransformStamped, Vector3
 def transform_from_marker(m):
     t = TransformStamped()
     t.header.frame_id = 'map'
-    t.child_frame_id = 'aruco/marker' + m["sign"]
+    t.child_frame_id = 'sign/' + m["sign"]
     t.transform.translation = Vector3(*m['pose']['position'])
     roll, pitch, yaw = m['pose']['orientation']
     (t.transform.rotation.x,
@@ -29,7 +29,7 @@ rospy.init_node('displaymapobjects')
 def main():
     rospy.loginfo("Initilizing object broadcaster")
  
-    jsonfile = os.path.dirname(__file__) + "/worlds/test.world.json"
+    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:
