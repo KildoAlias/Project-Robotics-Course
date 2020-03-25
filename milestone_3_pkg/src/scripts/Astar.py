@@ -175,13 +175,13 @@ class Astar():
     def addWalls(self):
         # Adding wall to the grid. 
         for wall in self.world["walls"]:
+            
             delta_x = (wall["plane"]["stop"][0] - wall["plane"]["start"][0])/self.discretization
             delta_y = (wall["plane"]["stop"][1] - wall["plane"]["start"][1])/self.discretization
             if self.VERBOSE == True:
                     print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
                     print("delta_x = {}, delta_y = {}".format(delta_x,delta_y))
-            if delta_x != 0 and delta_y != 0:
-
+            if delta_x != 0 and delta_y != 0: # SNEA VÄGGAR
                 x_start = (wall["plane"]["start"][0])/self.discretization
                 x_stop = (wall["plane"]["stop"][0])/self.discretization
                 y_start = (wall["plane"]["start"][1])/self.discretization
@@ -215,15 +215,27 @@ class Astar():
             else:
                 x_start = (wall["plane"]["start"][0] - self.cSpace)/self.discretization
                 x_stop = (wall["plane"]["stop"][0] + self.cSpace)/self.discretization
+                if x_start < 0:
+                    x_start = abs(self.X_limit['min'])/self.discretization + x_start
+                    x_stop = abs(self.X_limit['min'])/self.discretization + x_stop
                 if self.VERBOSE == True:
                     print("WALL:    start", wall["plane"]["start"], "   stop", wall["plane"]["stop"])
                 for x in range(int(x_start), int(x_stop)):
                     y_start = (wall["plane"]["start"][1] - self.cSpace)/self.discretization
                     y_stop = (wall["plane"]["stop"][1] + self.cSpace)/self.discretization
+                    if y_start < 0:
+                        y_start = abs(self.Y_limit['min'])/self.discretization + y_start
+                        y_stop = abs(self.Y_limit['min'])/self.discretization + y_stop
                     for y in range(int(y_start), int(y_stop)):
                         z_start = (wall["plane"]["start"][2] - self.cSpace)/self.discretization
                         z_stop = (wall["plane"]["stop"][2] + self.cSpace)/self.discretization
+                        if z_start < 0:
+                            z_start = abs(self.Z_limit['min'])/self.discretization + z_start
+                            z_stop = abs(self.Z_limit['min'])/self.discretization + z_stop
                         for z in range(int(z_start), int(z_stop)):
+                            if self.VERBOSE == True and z == 0:
+                                    print("x={}, y={}, z={}".format(x,y,z))
+                                    print('X_limit=',abs(self.X_limit['min'])/self.discretization)
                             if self.ifValid([x,y,z]):
                                 self.grid[x][y][z] = self.WALL["index"]
 
