@@ -20,7 +20,7 @@ def trans(m):
     t = TransformStamped()
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = 'cf1/camera_link'
-    t.child_frame_id = 'aruco_detect' + str(m.id)
+    t.child_frame_id = 'aruco/detected' + str(m.id)
     t.transform.translation = m.pose.pose.position
     t.transform.rotation= m.pose.pose.orientation
     broadcaster.sendTransform(t)

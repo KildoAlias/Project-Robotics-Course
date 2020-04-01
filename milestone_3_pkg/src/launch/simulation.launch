@@ -125,7 +125,7 @@
 
 <!-- NOTE: OUR CHANGES BEGINS HERE! -->
   <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_base2camera" args="0.01 0 0.02 1.5707963267948966 3.141592653589793 1.5707963267948966 base_link cf1/camera_link" />
-  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_map2odom" args="0 0 0 0 0 0 map cf1/odom" /> 
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_map2odom" args="1 0 0 0 0 0 map cf1/odom" /> 
   <node pkg="tf2_ros" type="static_transform_publisher" name="tf_static_baselink2baselink" args="0 0 0 0 0 0 cf1/base_link base_link" /> <!-- To show robot in Rviz -->
 
   <!-- To add rviz and rqt on launch -->

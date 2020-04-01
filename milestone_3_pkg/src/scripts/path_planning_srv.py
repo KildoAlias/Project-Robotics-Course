@@ -30,17 +30,50 @@ USED_ID = []
 
 def position_callback(msg):
     global pos
-    pos = msg
+    msg.header.frame_id = 'cf1/odom'
+    msg.header.stamp = rospy.Time.now()
+    if not tf_buf.can_transform(msg.header.frame_id, 'map', msg.header.stamp, rospy.Duration(1) ):
+        rospy.logwarn_throttle(2.0, 'No transform from %s to map' % msg.header.frame_id)
+        return
+
+    pos = tf_buf.transform(msg, 'map', rospy.Duration(1) )
+
 
 
 def publish_hover(goal):
+    tmp = PoseStamped()
+    tmp.header.stamp = rospy.Time.now()
+    tmp.header.frame_id = "map"
+    tmp.pose.position.x = goal[0]
+    tmp.pose.position.y = goal[1]
+    tmp.pose.position.z = goal[2]
+    [tmp.pose.orientation.x,
+    tmp.pose.orientation.y,   
+    tmp.pose.orientation.z,
+    tmp.pose.orientation.w] = quaternion_from_euler(0,0,math.radians(GOAL_YAW))
+
+    print(GOAL_YAW)
+    if not tf_buf.can_transform(tmp.header.frame_id, 'cf1/odom', tmp.header.stamp, rospy.Duration(1) ):
+        rospy.logwarn_throttle(2.0, 'No transform from %s to cf1/odom' % tmp.header.frame_id)
+        return
+
+    goal_odom = tf_buf.transform(tmp, 'cf1/odom', rospy.Duration(1) )
+
     cmd = Position()
     cmd.header.stamp = rospy.Time.now()
-    cmd.header.frame_id = "map"
-    cmd.x = goal[0]
-    cmd.y = goal[1]
-    cmd.z = goal[2]
-    cmd.yaw = GOAL_YAW
+    cmd.header.frame_id = "cf1/odom"
+    cmd.x = goal_odom.pose.position.x
+    cmd.y = goal_odom.pose.position.y
+    cmd.z = goal_odom.pose.position.z
+    R,P,yaw = euler_from_quaternion((goal_odom.pose.orientation.x,
+                                        goal_odom.pose.orientation.y,
+                                        goal_odom.pose.orientation.z,
+                                        goal_odom.pose.orientation.w))
+    cmd.yaw = math.degrees(yaw)
+    print(math.degrees(R))
+    print(math.degrees(P))
+    print(math.degrees(yaw))
+    
     pub_hover.publish(cmd)
 
 
@@ -143,12 +176,12 @@ tf_lstn  = tf2_ros.TransformListener(tf_buf)
 
 def main(empty):
     finnished = False
-    rate = rospy.Rate(1)  # Hz
-    rate2 = rospy.Rate(20)
+    rate = rospy.Rate(20)  # Hz
+   
     getNextGoal()   # Get the new goal, closest aruco marker.
     
     # Using Astar to navigate. 
-    nav = Astar(jsonfile,  0.02)
+    nav = Astar(jsonfile,  0.05)
     nav.start = [pos.pose.position.x, pos.pose.position.y, 0.4] # pos.pose.position.z
     
     nav.goal = GOAL #[2.7, 1, 0.4]
@@ -159,7 +192,7 @@ def main(empty):
         for goal in nav.droneWayPoints: # Publish path to rviz
             publish_path(goal, id=id)
             id += 1
-            rate2.sleep()
+            rate.sleep()
 
         id = 0
         for goal in nav.droneWayPoints: # Publish waypoints to hover.

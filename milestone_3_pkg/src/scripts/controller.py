@@ -77,7 +77,7 @@ def adjust():
 
 def spin():
     print('spin called')
-    return checkpointspin_srv()
+    return #checkpointspin_srv()
 
 
 def fallback():

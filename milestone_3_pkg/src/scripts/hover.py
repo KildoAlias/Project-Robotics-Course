@@ -7,6 +7,7 @@ goal=None
 
 def goal_callback(msg):
     global goal
+    # msg.header.frame_id = 'cf1/odom'
     goal=msg
 
 

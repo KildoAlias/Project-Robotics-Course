@@ -58,7 +58,7 @@ def measurement_callback(msg):
 
     # rospy.logwarn(msg)
     marker_detect = msg.markers[0]
-    rospy.logwarn(marker_detect)
+    # rospy.logwarn(marker_detect)
 
     marker = PoseStamped()
     marker.header.stamp = rospy.Time.now()
