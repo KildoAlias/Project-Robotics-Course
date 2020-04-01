@@ -11,10 +11,9 @@ from Astar import Astar
 import matplotlib.pyplot as plt
 from aruco_msgs.msg import MarkerArray
 import numpy as np
+from tf.transformations import *
 
-
-
-def quaternion_multiply(quaternion0, quaternion1):
+def quaternion_multiply(quaternion1, quaternion0):
     # w0, x0, y0, z0 = quaternion0
     x0 = quaternion0.x
     y0 = quaternion0.y
@@ -62,16 +61,19 @@ def measurement_callback(msg):
             return
     
         
+        aruco_frame = 'aruco/marker' + str(marker_detect.id)
         detect_look = tf_buf.lookup_transform('cf1/odom', marker.header.frame_id, marker.header.stamp )    
-        aruco_look = tf_buf.lookup_transform('map', 'aruco/marker' +  str(marker_detect.id), marker.header.stamp ) 
+        aruco_look = tf_buf.lookup_transform('map', aruco_frame, marker.header.stamp ) 
 
         
 
 
-        detect_look.transform.rotation.x = - detect_look.transform.rotation.x
-        detect_look.transform.rotation.y = - detect_look.transform.rotation.y
-        detect_look.transform.rotation.z = - detect_look.transform.rotation.z
+        # detect_look.transform.rotation.x = - detect_look.transform.rotation.x
+        # detect_look.transform.rotation.y = - detect_look.transform.rotation.y
+        # detect_look.transform.rotation.z = - detect_look.transform.rotation.z
+        detect_look.transform.rotation.w = -detect_look.transform.rotation.w
         q_diff = quaternion_multiply(  aruco_look.transform.rotation, detect_look.transform.rotation )
+   
 
         rospy.sleep(0.1)
         rot_trans(detect_look, q_diff[1], q_diff[2], q_diff[3], q_diff[0])
@@ -81,28 +83,27 @@ def measurement_callback(msg):
         rot_marker.child_frame_id = 'rot_marker'
         rot_marker.transform.translation = detect_look.transform.translation
         rot_marker.transform.rotation.w = 1
-        # br.sendTransform(rot_marker)
+        br.sendTransform(rot_marker)
         rospy.sleep(0.1)
 
-        # detect_look_new = tf_buf.lookup_transform('cf1/odom', 'rot_marker', marker.header.stamp )
+        detect_look_new = tf_buf.lookup_transform('cf1/odom', 'rot_marker', marker.header.stamp )
         odom = TransformStamped()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = 'map'
         odom.child_frame_id = 'cf1/odom'
-        odom.transform.rotation.x = 0 #q_diff[1]
-        odom.transform.rotation.y = 0 #q_diff[2]
-        odom.transform.rotation.z = 0 #q_diff[3]
-        odom.transform.rotation.w = 1 #q_diff[0]
-        odom.transform.translation.x = (aruco_look.transform.translation.x - detect_look.transform.translation.x) 
-        odom.transform.translation.y = (aruco_look.transform.translation.y - detect_look.transform.translation.y) 
-        odom.transform.translation.z = (aruco_look.transform.translation.z - detect_look.transform.translation.z)
+        odom.transform.rotation.x = q_diff[1]
+        odom.transform.rotation.y = q_diff[2]
+        odom.transform.rotation.z = q_diff[3]
+        odom.transform.rotation.w = q_diff[0]
+        odom.transform.translation.x = (aruco_look.transform.translation.x - detect_look_new.transform.translation.x) 
+        odom.transform.translation.y = (aruco_look.transform.translation.y - detect_look_new.transform.translation.y) 
+        odom.transform.translation.z = (aruco_look.transform.translation.z - detect_look_new.transform.translation.z)
         br2.sendTransform(odom)
 
 
 
 
 rospy.init_node("localisation")
-rospy.sleep(10)
 sub_det = rospy.Subscriber('/aruco/markers', MarkerArray, measurement_callback)
 # sub_goal = rospy.Subscriber('/cf1/pose', PoseStamped, getPosition_callback)
 pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=5)
@@ -127,6 +128,7 @@ def main():
     rate = rospy.Rate(20)
     # cmd = Position()
     # cmd.z = 0.35
+
     while not rospy.is_shutdown():
         # pub_cmd.publish(cmd)    
 

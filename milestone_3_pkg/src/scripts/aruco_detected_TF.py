@@ -32,7 +32,7 @@ def transform_marker(data):
         marker.header.frame_id = 'cf1/camera_link'
         marker.pose = marker_detect.pose.pose
 
-        if not tf_buf.can_transform(marker.header.frame_id, 'map', marker.header.stamp, rospy.Duration(0.5)):
+        if not tf_buf.can_transform(marker.header.frame_id, 'cf1/odom', marker.header.stamp, rospy.Duration(0.5)):
                 rospy.logwarn_throttle(5.0, 'No transform from %s to map' % marker.header.frame_id)
                 return
 
@@ -42,7 +42,7 @@ def transform_marker(data):
         trans = TransformStamped()
         trans.header.stamp = rospy.Time.now()
         trans.child_frame_id = "aruco/detected" + str(marker_detect.id)
-        trans.header.frame_id = 'map'
+        trans.header.frame_id = 'cf1/odom'
         trans.transform.translation = marker_odom.pose.position
         trans.transform.rotation = marker_odom.pose.orientation
 
