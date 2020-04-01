@@ -25,6 +25,7 @@ def goal_callback(msg):
 
 
 def transform_marker(data):
+    global goal
 
     for marker_detect in data.markers:  
         marker = PoseStamped()
@@ -32,12 +33,11 @@ def transform_marker(data):
         marker.header.frame_id = 'cf1/camera_link'
         marker.pose = marker_detect.pose.pose
 
-        if not tf_buf.can_transform(marker.header.frame_id, 'cf1/odom', marker.header.stamp, rospy.Duration(0.5)):
-                rospy.logwarn_throttle(5.0, 'No transform from %s to map' % marker.header.frame_id)
+        if not tf_buf.can_transform(marker.header.frame_id, 'map', marker.header.stamp, rospy.Duration(0.5)):
+                rospy.logwarn_throttle(5.0, 'No transform from %s to cf1/odom' % marker.header.frame_id)
                 return
 
-
-        marker_odom = tf_buf.transform(marker, 'map', rospy.Duration(0.5))
+        marker_odom = tf_buf.transform(marker, 'cf1/odom', rospy.Duration(0.5))
 
         trans = TransformStamped()
         trans.header.stamp = rospy.Time.now()
@@ -47,7 +47,7 @@ def transform_marker(data):
         trans.transform.rotation = marker_odom.pose.orientation
 
         br.sendTransform(trans)
-
+    goal = None
 
 
 rospy.init_node("aruco_tranz")

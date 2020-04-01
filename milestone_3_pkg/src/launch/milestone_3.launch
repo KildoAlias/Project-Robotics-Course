@@ -114,7 +114,7 @@
   <!-- <node pkg="milestone_3_pkg" type="hover.py" name="hover"/>
   <node pkg="milestone_3_pkg" type="path_planning_srv.py" name="path_planning_srv"/>
   <node pkg="milestone_3_pkg" type="takeoff.py" name="takeoff_srv"/> -->
-  <node pkg="milestone_3_pkg" type="localisation_v1.py" name="localisation"/>
+  <!-- <node pkg="milestone_3_pkg" type="localisation_v1.py" name="localisation"/> -->
   <!-- To add rviz and rqt on launch -->
   <node pkg="rviz" type="rviz" name="rviz" />
   <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>

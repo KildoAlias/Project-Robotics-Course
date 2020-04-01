@@ -48,13 +48,16 @@ def rot_trans(detect_look, q1, q2, q3, q4):
 
 def measurement_callback(msg):
     
-    # rospy.sleep(0.5)
+    # rospy.logwarn(msg)
     for marker_detect in msg.markers:
+        rospy.logwarn(marker_detect)
+
         marker = PoseStamped()
         marker.header.stamp = rospy.Time.now()
         marker.header.frame_id = "aruco/detected" + str(marker_detect.id)
         marker.pose = marker_detect.pose.pose
 
+        # rospy.loginfo(marker.header.frame_id)
       
         if not tf_buf.can_transform(marker.header.frame_id, 'map', marker.header.stamp, rospy.Duration(0.5)):
             rospy.logwarn_throttle(5.0, 'No transform from %s to map' % marker.header.frame_id)
@@ -66,27 +69,24 @@ def measurement_callback(msg):
         aruco_look = tf_buf.lookup_transform('map', aruco_frame, marker.header.stamp ) 
 
         
-
-
-        # detect_look.transform.rotation.x = - detect_look.transform.rotation.x
-        # detect_look.transform.rotation.y = - detect_look.transform.rotation.y
-        # detect_look.transform.rotation.z = - detect_look.transform.rotation.z
         detect_look.transform.rotation.w = -detect_look.transform.rotation.w
         q_diff = quaternion_multiply(  aruco_look.transform.rotation, detect_look.transform.rotation )
    
 
         rospy.sleep(0.1)
         rot_trans(detect_look, q_diff[1], q_diff[2], q_diff[3], q_diff[0])
+
         rot_marker = TransformStamped()
         rot_marker.header.stamp = rospy.Time.now()
         rot_marker.header.frame_id = 'odomRot'
-        rot_marker.child_frame_id = 'rot_marker'
+        rot_marker.child_frame_id = 'rot_marker' + str(marker_detect.id)
         rot_marker.transform.translation = detect_look.transform.translation
         rot_marker.transform.rotation.w = 1
         br.sendTransform(rot_marker)
         rospy.sleep(0.1)
 
-        detect_look_new = tf_buf.lookup_transform('cf1/odom', 'rot_marker', marker.header.stamp )
+        rot_marker_frame = 'rot_marker' + str(marker_detect.id)
+        detect_look_new = tf_buf.lookup_transform('cf1/odom', rot_marker_frame, marker.header.stamp )
         odom = TransformStamped()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = 'map'
@@ -106,7 +106,7 @@ def measurement_callback(msg):
 rospy.init_node("localisation")
 sub_det = rospy.Subscriber('/aruco/markers', MarkerArray, measurement_callback)
 # sub_goal = rospy.Subscriber('/cf1/pose', PoseStamped, getPosition_callback)
-pub_cmd  = rospy.Publisher('/cf1/cmd_position', Position, queue_size=5)
+
 
 tf_buf   = tf2_ros.Buffer()
 tf_lstn  = tf2_ros.TransformListener(tf_buf)
@@ -131,7 +131,6 @@ def main():
 
     while not rospy.is_shutdown():
         # pub_cmd.publish(cmd)    
-
 
         rate.sleep()
 
