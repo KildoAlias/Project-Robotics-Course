@@ -26,7 +26,8 @@ def transform_from_marker(m):
 
 def main():
     # Let ROS filter through the arguments
-    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
+    map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
+    jsonfile = os.path.dirname(__file__) + map_world
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:

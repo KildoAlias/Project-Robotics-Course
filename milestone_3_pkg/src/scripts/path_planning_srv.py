@@ -21,7 +21,8 @@ from aruco_msgs.msg import MarkerArray
 # Current pos (global state)
 GOAL = []
 pos = PoseStamped()
-jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
+map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
+jsonfile = os.path.dirname(__file__) + map_world
 MARKERS = []
 GOAL_YAW = 0
 USED_ID = []
@@ -132,7 +133,7 @@ def publish_path(goal, color = [0.0, 1.0, 0.0], id = 0):
     pub_path.publish(marker)
 
 
-rospy.init_node('path_planning_server')
+rospy.init_node('path_planning_srv')
 sub_pos = rospy.Subscriber('/cf1/pose', PoseStamped, position_callback)
 pub_hover = rospy.Publisher('hover', Position, queue_size=10)
 pub_path = rospy.Publisher('visualization_marker', Marker, queue_size=10)
@@ -142,12 +143,13 @@ tf_lstn  = tf2_ros.TransformListener(tf_buf)
 
 def main(empty):
     finnished = False
-    rate = rospy.Rate(20)  # Hz
+    rate = rospy.Rate(1)  # Hz
+    rate2 = rospy.Rate(20)
     getNextGoal()   # Get the new goal, closest aruco marker.
     
     # Using Astar to navigate. 
-    nav = Astar(jsonfile,  0.1)
-    nav.start = [pos.pose.position.x, pos.pose.position.y, 0.05] # pos.pose.position.z
+    nav = Astar(jsonfile,  0.02)
+    nav.start = [pos.pose.position.x, pos.pose.position.y, 0.4] # pos.pose.position.z
     
     nav.goal = GOAL #[2.7, 1, 0.4]
     nav.getPath()
@@ -157,7 +159,7 @@ def main(empty):
         for goal in nav.droneWayPoints: # Publish path to rviz
             publish_path(goal, id=id)
             id += 1
-            rate.sleep()
+            rate2.sleep()
 
         id = 0
         for goal in nav.droneWayPoints: # Publish waypoints to hover.
@@ -172,7 +174,7 @@ def main(empty):
 
 def path_planning_server():
     rospy.loginfo("Path planning service ready")
-    rospy.Service('path_planning_server', Empty, main)
+    rospy.Service('path_planning_srv', Empty, main)
     rospy.spin()
 
 

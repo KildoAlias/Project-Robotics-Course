@@ -9,9 +9,9 @@
   "roadsign_size": [0.20, 0.20],
 
   "markers": [
-    {"id": 0, "pose": {"position": [-0.25, 0.0, 0.40], "orientation": [0.0, -90.0, 180.0]}},
-    {"id": 1, "pose": {"position": [-0.25, 0.0, 0.40], "orientation": [0.0, -90.0, 0.0]}},
-    {"id": 2, "pose": {"position": [ 0.25, 0.0, 0.00], "orientation": [90.0, 0.0, 90.0]}}
+    {"id": 4, "pose": {"position": [-0.25, 0.0, 0.40], "orientation": [0.0, -90.0, 180.0]}},
+    {"id": 2, "pose": {"position": [-0.25, 0.0, 0.40], "orientation": [0.0, -90.0, 0.0]}},
+    {"id": 1, "pose": {"position": [ 0.25, 0.0, 0.00], "orientation": [90.0, 0.0, 90.0]}}
   ],
 
   "walls": [

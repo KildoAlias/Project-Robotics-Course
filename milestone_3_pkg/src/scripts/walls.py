@@ -69,7 +69,8 @@ def main():
     rospy.loginfo("done initilizing.")
     rate = rospy.Rate(30)  # Hz
     cSpace = 0.2
-    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
+    map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
+    jsonfile = os.path.dirname(__file__) + map_world
     print(jsonfile)
     with open(jsonfile, 'rb') as f:
         world = json.load(f)

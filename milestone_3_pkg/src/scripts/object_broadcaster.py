@@ -29,7 +29,8 @@ rospy.init_node('displaymapobjects')
 def main():
     rospy.loginfo("Initilizing object broadcaster")
  
-    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
+    map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
+    jsonfile = os.path.dirname(__file__) + map_world
 
     # Load world JSON
     with open(jsonfile, 'rb') as f:

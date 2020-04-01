@@ -23,9 +23,7 @@ def handle_spin(empty):
     x = msg.pose.position.x
     y = msg.pose.position.y
     z = msg.pose.position.z
-
-
-
+    
     roll, pitch, yaw = euler_from_quaternion((msg.pose.orientation.x,
                                                     msg.pose.orientation.y,
                                                     msg.pose.orientation.z,
@@ -49,11 +47,11 @@ def handle_spin(empty):
 
 
 
-    rospy.sleep(0.2)
+    rospy.sleep(0.4)
 
-    r = rospy.Rate(10)
+    r = rospy.Rate(5)
     while(state==True):
-
+        print(cmd.yaw)
         angle = 4
         cmd.yaw = cmd.yaw + angle
 

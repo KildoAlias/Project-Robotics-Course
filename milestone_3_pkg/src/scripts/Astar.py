@@ -353,8 +353,8 @@ class Astar():
 
 
 def main():
-    jsonfile = os.path.dirname(__file__) + "/worlds/dd2419_maps/demo01.world.json"
-    print(jsonfile)
+    map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
+    jsonfile = os.path.dirname(__file__) + map_world
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
     nav.start = [-0.2, 0.4, 0.4]
     nav.goal = [-0.2, -0.4, 0.4]

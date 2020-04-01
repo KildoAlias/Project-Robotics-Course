@@ -5,7 +5,6 @@ from std_srvs.srv import Empty
 
 
 def main():
-    rate = rospy.Rate(20)  # Hz
 
     while not rospy.is_shutdown():
         execute_state()  # execute the current state
@@ -14,7 +13,7 @@ def main():
         # check if state succeded or failed
         success = switcher.get('success', False)
 
-        # determine what state to swith to
+        # determine what state to switch to
         if state == 'takeoff':
             switcher['state'] = 'detect'
         elif state == 'detect':
@@ -28,11 +27,12 @@ def main():
             switcher['state'] = 'detect'
         elif state == 'path':
             if success == True:
+                rospy.sleep(1)
                 switcher['state'] = 'detect'
             elif success == False:
                 switcher['state'] = 'land'
 
-        rate.sleep()
+        rospy.sleep(1)
 
 
 # Placeholders for services
@@ -43,39 +43,45 @@ def main():
 
 def detect_srv():
     print('detect placeholder')
-    rospy.sleep(2)
+    rospy.sleep(1)
 
 
 def adjust_srv():
     print('adjust placeholder')
-    rospy.sleep(2)
+    rospy.sleep(1)
 
 ##
 
 
 def takeoff():
+    print('takeoff called')
     return takeoff_srv()
 
 
 def path():
+    print('path called')
     switcher['success'] = True
     return path_srv()
 
 
 def detect():
+    print('detect called')
     switcher['success'] = True
     return detect_srv()
 
 
 def adjust():
+    print('adjust called')
     return adjust_srv()
 
 
 def spin():
+    print('spin called')
     return checkpointspin_srv()
 
 
 def fallback():
+    print('fallback called')
     rospy.loginfo('Invalid state! Landing!')
     return takeoff()
 
@@ -117,12 +123,12 @@ if __name__ == "__main__":
     rospy.loginfo('takeoff srv started!')
 
     rospy.loginfo('Waiting for "path_planning_server" service...')
-    rospy.wait_for_service('path_planning_server')
-    path_srv = rospy.ServiceProxy('path_planning_server', Empty)
+    rospy.wait_for_service('path_planning_srv')
+    path_srv = rospy.ServiceProxy('path_planning_srv', Empty)
     rospy.loginfo('path planning srv started!')
     
     
     rospy.loginfo('All services are running!')
-    rospy.sleep(1)
+    rospy.sleep(2)
 
     main()
