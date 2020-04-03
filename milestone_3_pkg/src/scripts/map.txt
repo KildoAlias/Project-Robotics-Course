@@ -1,1 +1,1 @@
-/worlds/dd2419_maps/demo02.world.json
+/worlds/dd2419_maps/demo03.world.json

@@ -4,7 +4,7 @@
   <arg name="mav_name" default="crazyflie"/>
   <arg name="world_name" default="demo01"/>
   <arg name="debug" default="false"/>
-  <arg name="gui" default="true"/>
+  <arg name="gui" default="false"/>
   <arg name="paused" default="false"/>
 
   <!-- Camera arguments -->
@@ -144,7 +144,7 @@
   <node pkg="milestone_3_pkg" type="hover.py" name="hover"/>
   <node pkg="milestone_3_pkg" type="path_planning_srv.py" name="path_planning_srv"/>
   <node pkg="milestone_3_pkg" type="takeoff.py" name="takeoff_srv"/>
-
+  <node pkg="simulation_GUI" type="GUI.py" name="DroneSimulationLight_2" args="demo01.world.json"/>	
 
   <!-- Adding aruco camera -->
   <include file="$(find dd2419_simulation)/launch/aruco.launch">
