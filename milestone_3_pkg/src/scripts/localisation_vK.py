@@ -135,7 +135,7 @@ br.sendTransform(trans)
 
 
 def main():
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(10)
     # cmd = Position()
     # cmd.z = 0.35
 

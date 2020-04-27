@@ -1,13 +1,36 @@
 #!/usr/bin/env python
 
 import rospy
+import tf2_ros
+import tf2_geometry_msgs
 from std_srvs.srv import Empty
+from darknet_ros_msgs.msg import BoundingBoxes
+
+clearedSigns=  {'Object_Detected/stop sign' :True, 
+                'Object_Detected/PLACEHOLDER sign':True}
+def detection():
+
+
+
+    if tf_buf.can_transform("Object_Detected/stop sign", 'map', rospy.Time.now(), rospy.Duration(0.05)): 
+        if clearedSigns["Object_Detected/stop sign"]:
+            clearedSigns["Object_Detected/stop sign"] = False
+            return True
+    elif tf_buf.can_transform("Object_Detected/PLACEHOLDER sign", 'map', rospy.Time.now(), rospy.Duration(0.05)):
+        if clearedSigns["Object_Detected/PLACEHOLDER sign"]:
+            clearedSigns["Object_Detected/PLACEHOLDER sign"] = False
+            return True
+    else:
+        rospy.logwarn('NO SIGN')
+    return False
+
 
 
 def main():
 
     while not rospy.is_shutdown():
         execute_state()  # execute the current state
+        rospy.sleep(1)
         # get what the current state is
         state = switcher.get('state', 'fallback')
         # check if state succeded or failed
@@ -15,69 +38,45 @@ def main():
 
         # determine what state to switch to
         if state == 'takeoff':
-            switcher['state'] = 'detect'
+            rospy.sleep(0.5)
+            switcher['state'] = 'path'
         elif state == 'detect':
-            if success == True:
+            if detection():
                 switcher['state'] = 'spin'
-            elif success == False:
-                switcher['state'] = 'adjust'
         elif state == 'spin':
             switcher['state'] = 'path'
-        elif state == 'adjust':
-            switcher['state'] = 'detect'
         elif state == 'path':
-            if success == True:
-                rospy.sleep(1)
-                switcher['state'] = 'detect'
-            elif success == False:
-                switcher['state'] = 'land'
+            switcher['state'] = 'detect'
 
         rospy.sleep(1)
 
 
-# Placeholders for services
-# def path_srv():
-#     print('path placeholder')
-#     rospy.sleep(2)
-
 
 def detect_srv():
-    print('detect placeholder')
+    print('detect called!')
     rospy.sleep(1)
-
-
-def adjust_srv():
-    print('adjust placeholder')
-    rospy.sleep(1)
-
-##
+    return
 
 
 def takeoff():
     print('takeoff called')
+    takeoff_srv()
     return takeoff_srv()
 
 
 def path():
     print('path called')
-    switcher['success'] = True
     return path_srv()
 
 
 def detect():
     print('detect called')
-    switcher['success'] = True
     return detect_srv()
-
-
-def adjust():
-    print('adjust called')
-    return adjust_srv()
 
 
 def spin():
     print('spin called')
-    return #checkpointspin_srv()
+    return checkpointspin_srv()
 
 
 def fallback():
@@ -90,7 +89,6 @@ switcher = {
     'takeoff': takeoff,  # takeoff
     'path': path,  # find and follow path
     'detect': detect,  # detection and localization
-    'adjust': adjust,
     'spin': spin,  # execute checkpointspin
     'land': takeoff,  # landing
     'fallback': fallback,  # fallback for invalid state
@@ -110,6 +108,9 @@ def execute_state():
 if __name__ == "__main__":
 
     rospy.init_node('controller')
+    tf_buf   = tf2_ros.Buffer()
+    tf_lstn  = tf2_ros.TransformListener(tf_buf)
+
     rospy.loginfo('controller started!')
 
     rospy.loginfo('Waiting for "checkpointspin_server" service ...')

@@ -81,7 +81,7 @@ class Astar():
         self.rows = None
         self.cols = None
         self.depth = None
-        self.cSpace = 0.2
+        self.cSpace = 0.25
 
         self.start = None
         self.goal = None
@@ -392,13 +392,8 @@ def main():
     map_world = open(os.path.dirname(__file__) + '/map.txt', 'r').readline()
     jsonfile = os.path.dirname(__file__) + map_world
     nav = Astar(jsonfile, 0.1, VERBOSE=1)
-<<<<<<< HEAD
-    nav.start = [4.7, 0.4, 0.4]
-    nav.goal = [4.7, -0.4, 0.4]
-=======
-    nav.start =[-0.2, -0.5, 0.4]# demo01:[-0.2, -0.5, 0.4]# demo03:[4.8, -0.5, 0.4] # demo02: [4.8, -4.5, 0.4]
-    nav.goal = [-0.2, 0.5, 0.4]# demo01:[-0.2, 0.5, 0.4]# demo03:[4.8, 0.5, 0.4] # demo02: [4.8, -5.5, 0.4]
->>>>>>> 583ac525f64958c86c371ae62516f2632b6e2f4b
+    nav.start =[4.8, -0.5, 0.4]# demo01:[-0.2, -0.5, 0.4]# demo03:[4.8, -0.5, 0.4] # demo02: [4.8, -4.5, 0.4]
+    nav.goal = [4.8, 0.5, 0.4]# demo01:[-0.2, 0.5, 0.4]# demo03:[4.8, 0.5, 0.4] # demo02: [4.8, -5.5, 0.4]
     nav.getPath()
     nav.printMAP()
     plt.show()

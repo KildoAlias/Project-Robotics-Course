@@ -112,7 +112,7 @@
   <!-- New Nodes/services -->
   <node pkg="milestone_3_pkg" type="aruco_markers_static_TF.py" name="aruco_markers_static"/>
   <node pkg="milestone_3_pkg" type="hover.py" name="hover"/>
-  <!-- <node pkg="milestone_3_pkg" type="path_planning_srv.py" name="path_planning_srv"/> -->
+  <node pkg="milestone_3_pkg" type="path_planning_srv.py" name="path_planning_srv"/>
   <node pkg="milestone_3_pkg" type="takeoff.py" name="takeoff_srv"/>
   <node pkg="milestone_3_pkg" type="localisation_vK.py" name="localisation"/>
   <!-- To add rviz and rqt on launch -->

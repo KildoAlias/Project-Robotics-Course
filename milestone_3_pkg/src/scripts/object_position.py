@@ -65,7 +65,7 @@ def transform_sign(data):
 
             trans = TransformStamped()
             trans.header.stamp = rospy.Time.now()
-            trans.child_frame_id = "yolo3/"  + str(sign.Class) + "_sign_detected"
+            trans.child_frame_id = "Object_Detected/"  + str(sign.Class)
             trans.header.frame_id = 'map'
             trans.transform.translation = sign_map.pose.position
             trans.transform.rotation = sign_map.pose.orientation
@@ -83,11 +83,13 @@ br = tf2_ros.StaticTransformBroadcaster()
 sub_det = rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, darknet_callback)
 
 def main():
+    global goal
     rospy.loginfo("Initilizing object position")
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(5)
     while not rospy.is_shutdown():
         if goal:
             transform_sign(goal)
+            goal = None
         rate.sleep()
 
 

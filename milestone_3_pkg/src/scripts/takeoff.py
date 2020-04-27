@@ -8,6 +8,7 @@ from tf.transformations import euler_from_quaternion
 
 
 def callback(empty):
+    rospy.sleep(1)
     pub_cmd  = rospy.Publisher('hover', Position, queue_size=2)
     msg=rospy.wait_for_message('/cf1/pose',PoseStamped) 
 
@@ -25,12 +26,9 @@ def callback(empty):
     cmd.yaw = yaw
 
 
-    if msg.pose.position.z > 0.14:
-        cmd.z=0
-        rospy.loginfo('Landing service called')
-    elif msg.pose.position.z <= 0.14:
-        cmd.z=0.4
-        rospy.loginfo('Takeoff service called')
+
+    cmd.z=0.4
+    rospy.loginfo('Takeoff service called')
     
 
     pub_cmd.publish(cmd)

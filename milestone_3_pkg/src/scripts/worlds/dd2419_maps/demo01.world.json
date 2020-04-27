@@ -24,8 +24,8 @@
 
 
   "roadsigns": [
-    {"sign": "no_bicycle",              "pose": {"position": [-0.48, -0.25, 0.4], "orientation": [0.0, -90.0, -90.0]}},
-    {"sign": "stop",                    "pose": {"position": [-0.48,  0.25, 0.4], "orientation": [0.0, -90.0, -90.0]}}
+    {"sign": "no_bicycle",              "pose": {"position": [-0.48, -0.4, 0.4], "orientation": [0.0, -90.0, -90.0]}},
+    {"sign": "stop",                    "pose": {"position": [-0.48,  0.4, 0.4], "orientation": [0.0, -90.0, -90.0]}}
   ]
 
 }

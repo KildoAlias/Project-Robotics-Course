@@ -94,7 +94,7 @@ def getRelativePose():
         marker.header.stamp = rospy.Time.now()
         marker.header.frame_id = "sign/"+str(m["sign"])
         marker.pose.position.x = 0
-        marker.pose.position.y = 0.2
+        marker.pose.position.y = 0.6
         marker.pose.position.z = 0
         [marker.pose.orientation.x,
         marker.pose.orientation.y,
@@ -116,7 +116,7 @@ def getRelativePose():
                                                 pose_odom.pose.orientation.y,
                                                 pose_odom.pose.orientation.z,
                                                 pose_odom.pose.orientation.w))
-        goal['yaw'] = math.degrees(yaw)
+        goal['yaw'] = math.degrees(yaw) - 5
         print("goal", goal)
         MARKERS.append(goal)
 
@@ -176,7 +176,7 @@ tf_lstn  = tf2_ros.TransformListener(tf_buf)
 
 def main(empty):
     finnished = False
-    rate = rospy.Rate(20)  # Hz
+    rate = rospy.Rate(5)  # Hz
    
     getNextGoal()   # Get the new goal, closest aruco marker.
     
